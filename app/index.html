@@ -3,23 +3,82 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI trophy checklist</title>
+<title>GTA VI Trophy Guide &amp; Tracker — all 55 PS5 trophies</title>
+<meta name="description" content="An offline guide and checklist for the 55 PlayStation 5 trophies of Grand Theft Auto VI: every official name, description and grade, a cited guide for each trophy, a roadmap to the platinum, missable flags, and saved progress.">
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>GTA VI trophy checklist</h1>
-  <p id="progress">0 of 55 earned</p>
+<header class="masthead">
+  <div class="masthead-text">
+    <p class="kicker">Grand Theft Auto VI &middot; PlayStation 5 &middot; 55 trophies</p>
+    <h1>GTA VI Trophy Guide &amp; Tracker</h1>
+    <p class="lede">Every official trophy, a guide to each one in plain words with its sources, a roadmap to the platinum, and a checklist that saves in your browser. Works fully offline &mdash; no account, no network.</p>
+  </div>
+  <div class="progress-card" id="progressCard" aria-live="polite">
+    <p class="progress-big"><span id="earnedCount">0</span><span class="of"> / 55 earned</span></p>
+    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="55" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+    <p class="progress-sub" id="progressSub">0% &middot; Platinum: Vice Got a Price!</p>
+    <p class="grade-counts" id="gradeCounts"></p>
+  </div>
 </header>
-<div class="controls">
-  <label>Grade <select id="grade"><option value="all">All</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
-  <button id="export" type="button">Export progress</button>
-  <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
-</div>
-<table>
-  <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>How to get it</th></tr></thead>
-  <tbody id="rows"></tbody>
-</table>
+
+<nav class="views" aria-label="Sections">
+  <button type="button" class="view-tab is-active" data-view="checklist">Checklist</button>
+  <button type="button" class="view-tab" data-view="roadmap">Roadmap to Platinum</button>
+  <button type="button" class="view-tab" data-view="missables">Missables &amp; saves</button>
+</nav>
+
+<main>
+  <section id="view-checklist" class="view is-active" aria-label="Trophy checklist">
+    <div class="toolbar">
+      <label class="search">Search
+        <input id="search" type="search" placeholder="Name, mission or keyword&hellip;" autocomplete="off">
+      </label>
+      <div class="kind-filters" id="kindFilters" role="group" aria-label="Filter by kind"></div>
+      <label class="select">Grade
+        <select id="gradeFilter">
+          <option value="all">All grades</option>
+          <option value="platinum">Platinum</option>
+          <option value="gold">Gold</option>
+          <option value="silver">Silver</option>
+          <option value="bronze">Bronze</option>
+        </select>
+      </label>
+      <label class="check"><input id="hideEarned" type="checkbox"> Hide earned</label>
+      <label class="check spoiler-check"><input id="spoilerMode" type="checkbox"> Spoiler-free mode</label>
+      <div class="io-buttons">
+        <button id="exportBtn" type="button">Export progress</button>
+        <label class="import-btn">Import progress <input id="importFile" type="file" accept="application/json,.json"></label>
+        <button id="resetBtn" type="button" class="quiet">Reset</button>
+      </div>
+    </div>
+    <p class="toolbar-note" id="filterNote"></p>
+    <p class="spoiler-note" id="spoilerNote" hidden>Spoiler-free mode is on: story trophies stay hidden until you earn them. Tick one to reveal it.</p>
+    <div class="list" id="trophyList"></div>
+    <p class="empty" id="emptyState" hidden>No trophies match these filters. Try clearing the search or choosing another kind.</p>
+  </section>
+
+  <section id="view-roadmap" class="view" aria-label="Roadmap to the platinum">
+    <div id="roadmap"></div>
+  </section>
+
+  <section id="view-missables" class="view" aria-label="Missable trophies and save strategy">
+    <div id="missables"></div>
+  </section>
+</main>
+
+<aside class="detail" id="detail" hidden aria-label="Trophy guide">
+  <button type="button" class="detail-close" id="detailClose" aria-label="Close guide">&times;</button>
+  <div id="detailBody"></div>
+</aside>
+<div class="scrim" id="scrim" hidden></div>
+
+<footer>
+  <p>Official trophy names, descriptions and grades are as PlayStation publishes them, cross-checked on PSNProfiles and Exophase via <a href="https://www.planetgta6.com/en/gta-6-trophies/">Planet GTA 6</a>. Every guide on this page is written for this guide in its own words and names its sources beside it. Grand Theft Auto VI is developed and published by Rockstar Games; this is an unofficial fan-made guide with no Rockstar logo or artwork.</p>
+  <p>Sources consulted: <a href="https://www.planetgta6.com/en/gta-6-trophies/">Planet GTA 6 trophy list</a> &middot; <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/">KeenGamer trophy guide &amp; platinum roadmap</a> &middot; <a href="https://outputlag.com/guides/gta-6-trophy-list/">Output Lag trophy list</a>. Progress is stored only in this browser (localStorage); export downloads a JSON file you can import back.</p>
+</footer>
+
 <script type="module" src="app.js"></script>
 </body>
 </html>
