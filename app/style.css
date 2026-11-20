@@ -302,3 +302,117 @@ footer p { margin: 6px 0; }
   .list { grid-template-columns: 1fr; }
   .io-buttons { margin-left: 0; }
 }
+
+/* Statistics panel — progress rings by grade, bars by kind */
+.stats-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin: 16px 0 4px;
+}
+.stats-head h2 { margin: 0 0 4px; font-size: 19px; }
+.stats-sub { margin: 0 0 14px; color: var(--ink-dim); font-size: 13px; }
+.ring-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+.stat-ring {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+.stat-ring .ring-svg { display: block; margin: 0 auto 6px; }
+.stat-ring .ring-track { fill: none; stroke: #0f0b1a; stroke-width: 8; }
+.stat-ring .ring-fill { fill: none; stroke-width: 8; stroke-linecap: round; transform: rotate(-90deg); transform-origin: center; }
+.stat-ring .ring-num { font-size: 20px; font-weight: 800; fill: var(--ink); }
+.stat-ring .ring-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-dim); }
+.stat-ring .ring-pct { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+.stat-ring.ring-platinum .ring-fill { stroke: var(--platinum); }
+.stat-ring.ring-gold .ring-fill { stroke: var(--gold); }
+.stat-ring.ring-silver .ring-fill { stroke: var(--silver); }
+.stat-ring.ring-bronze .ring-fill { stroke: var(--bronze); }
+.kind-bars { display: grid; gap: 8px; margin-top: 14px; }
+.kind-bar-row { display: grid; grid-template-columns: 150px 1fr 64px; gap: 10px; align-items: center; font-size: 13px; }
+.kind-bar-row .kind-bar-name { color: var(--ink-dim); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kind-bar-track { height: 10px; border-radius: 5px; background: #0f0b1a; border: 1px solid var(--line); overflow: hidden; }
+.kind-bar-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--accent-2)); }
+.kind-bar-row .kind-bar-count { text-align: right; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.next-up { margin: 14px 0 0; font-size: 14px; color: var(--ink); }
+.next-up strong { color: var(--accent-2); }
+
+/* Daily planner tab */
+.planner-stage h2 { margin-bottom: 6px; }
+.planner-intro { margin: 0 0 14px; }
+.planner-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; margin-bottom: 10px; }
+.planner-date { font-size: 13px; color: var(--ink-dim); font-weight: 700; }
+.planner-date input {
+  display: block;
+  margin-top: 4px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+#planBuildBtn {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #241016;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-weight: 800;
+  font-size: 14px;
+}
+.planner-progress { margin: 0; font-size: 13px; color: var(--ink-faint); align-self: center; }
+.planner-summary { margin: 4px 0 14px; font-size: 14px; color: var(--ink); }
+.plan-day {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.plan-day.is-rest { opacity: .75; }
+.plan-day-head { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; justify-content: space-between; }
+.plan-day-head h3 { margin: 0; font-size: 15px; }
+.plan-day-focus { color: var(--accent-2); font-size: 13px; font-weight: 700; }
+.plan-day-load { color: var(--ink-faint); font-size: 12px; }
+.plan-day ul { margin: 8px 0 0; padding-left: 0; list-style: none; }
+.plan-trophy { display: flex; gap: 8px; align-items: center; padding: 5px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.plan-trophy:first-child { border-top: none; }
+.plan-trophy .plan-grade { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; border-radius: 999px; padding: 2px 8px; flex: 0 0 auto; }
+.plan-trophy .plan-grade.grade-platinum { background: var(--platinum); color: #0b2b31; }
+.plan-trophy .plan-grade.grade-gold { background: var(--gold); color: #3a2a00; }
+.plan-trophy .plan-grade.grade-silver { background: var(--silver); color: #22262b; }
+.plan-trophy .plan-grade.grade-bronze { background: var(--bronze); color: #3a1e08; }
+.plan-trophy .plan-name { flex: 1 1 auto; }
+.plan-trophy .plan-kind { color: var(--ink-faint); font-size: 12px; }
+.plan-trophy .plan-earn {
+  border: 1px solid var(--ok);
+  background: transparent;
+  color: var(--ok);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-weight: 700;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+.plan-trophy .plan-earn.is-on { background: var(--ok); color: #0b2b0e; }
+.plan-day .plan-rest-note { margin: 6px 0 0; font-size: 13px; color: var(--ink-faint); }
+
+/* Quick tips inside the trophy detail panel */
+.tips-list { list-style: none; padding: 0; margin: 0 0 10px; }
+.tips-list li {
+  margin: 6px 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--teal);
+  background: var(--card);
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  color: var(--ink);
+}
+

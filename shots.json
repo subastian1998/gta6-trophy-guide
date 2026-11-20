@@ -27,9 +27,9 @@
     }
   },
   {
-    "file": "4-spoiler.png",
-    "how": "headless Chromium screenshot of the app served locally; Story filter with spoiler-free mode on, showing earned story trophies revealed and unearned ones hidden",
-    "path": "/?demo=1&filter=story&spoiler=on",
+    "file": "4-planner.png",
+    "how": "headless Chromium screenshot of the app served locally; Daily planner tab with demo progress (?demo=1), target date 30 days out, the missable trophy on day one and the 100% trophy last",
+    "path": "/?demo=1&view=planner",
     "viewport": {
       "height": 800,
       "width": 1280

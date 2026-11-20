@@ -33,6 +33,7 @@
   <button type="button" class="view-tab is-active" data-view="checklist">Checklist</button>
   <button type="button" class="view-tab" data-view="roadmap">Roadmap to Platinum</button>
   <button type="button" class="view-tab" data-view="missables">Missables &amp; saves</button>
+  <button type="button" class="view-tab" data-view="planner">Daily planner</button>
 </nav>
 
 <main>
@@ -69,6 +70,15 @@
     </div>
     <p class="toolbar-note" id="filterNote"></p>
     <p class="spoiler-note" id="spoilerNote" hidden>Spoiler-free mode is on: story trophies stay hidden until you earn them. Tick one to reveal it.</p>
+    <section class="stats-panel" id="statsPanel" aria-label="Progress statistics">
+      <div class="stats-head">
+        <h2>Your progress at a glance</h2>
+        <p class="stats-sub">Completion by grade and by kind, live from your checklist. Rings fill as you earn; bars show each kind's share.</p>
+      </div>
+      <div class="ring-grid" id="ringGrid"></div>
+      <div class="kind-bars" id="kindBars"></div>
+      <p class="next-up" id="nextUp"></p>
+    </section>
     <div class="list" id="trophyList"></div>
     <p class="empty" id="emptyState" hidden>No trophies match these filters. Try clearing the search or choosing another kind.</p>
   </section>
@@ -79,6 +89,22 @@
 
   <section id="view-missables" class="view" aria-label="Missable trophies and save strategy">
     <div id="missables"></div>
+  </section>
+
+  <section id="view-planner" class="view" aria-label="Daily planner">
+    <div class="stage planner-stage">
+      <h2>Daily planner — your days to the platinum</h2>
+      <p class="planner-intro">Pick a target date and the planner spreads the trophies you have not earned yet across the days until then. The one missable trophy goes on day one, story missions follow in order, and the 100% completion trophy lands last. Tick a trophy earned here and the plan rebuilds itself.</p>
+      <div class="planner-controls">
+        <label class="planner-date">Target date
+          <input id="planDate" type="date">
+        </label>
+        <button id="planBuildBtn" type="button">Build my plan</button>
+        <p class="planner-progress" id="plannerProgress"></p>
+      </div>
+      <p class="planner-summary" id="plannerSummary"></p>
+      <div id="planDays"></div>
+    </div>
   </section>
 </main>
 

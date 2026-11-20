@@ -3,6 +3,7 @@
 // Data: app/data/trophies.json (official names/descriptions/grades + guides).
 // Roadmap content: app/roadmap.js. No network requests beyond the local files.
 import { PLATINUM_FACTS, ROADMAP_STAGES, MISSABLE_NOTES } from "./roadmap.js";
+import { buildPlan, defaultTargetISO, nextSuggested, planProgress, planSummary } from "./planner.js";
 
 const STORAGE_KEY = "gta6-trophy-guide-v1";
 const SPOILER_KEY = "gta6-trophy-guide-spoiler";
@@ -153,6 +154,8 @@ function renderList() {
   }
   renderKindFilters();
   renderProgress();
+  renderStats();
+  renderPlanner();
 }
 
 function buildCard(t) {
@@ -286,6 +289,19 @@ function openDetail(t) {
   const guideP = document.createElement("p");
   guideP.textContent = t.guide;
   detailBodyEl.append(guideH, guideP);
+
+  if (t.tips?.length) {
+    const tipsH = document.createElement("h3");
+    tipsH.textContent = "Quick tips";
+    const tipsList = document.createElement("ul");
+    tipsList.className = "tips-list";
+    for (const tip of t.tips) {
+      const li = document.createElement("li");
+      li.textContent = tip;
+      tipsList.append(li);
+    }
+    detailBodyEl.append(tipsH, tipsList);
+  }
 
   if (t.target) {
     const targetP = document.createElement("p");
@@ -468,6 +484,164 @@ function renderMissables() {
   root.append(s);
 }
 
+// Statistics panel: one progress ring per grade and one bar per kind.
+// Rings are plain SVG circles; the filled arc is the earned share.
+const RING_RADIUS = 34;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+
+function buildRing(grade, got, total) {
+  const wrap = document.createElement("div");
+  wrap.className = `stat-ring ring-${grade}`;
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "ring-svg");
+  svg.setAttribute("width", "84");
+  svg.setAttribute("height", "84");
+  svg.setAttribute("viewBox", "0 0 84 84");
+  const track = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  track.setAttribute("class", "ring-track");
+  track.setAttribute("cx", "42");
+  track.setAttribute("cy", "42");
+  track.setAttribute("r", String(RING_RADIUS));
+  const fill = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  fill.setAttribute("class", "ring-fill");
+  fill.setAttribute("cx", "42");
+  fill.setAttribute("cy", "42");
+  fill.setAttribute("r", String(RING_RADIUS));
+  const share = total === 0 ? 0 : got / total;
+  fill.setAttribute("stroke-dasharray", `${(share * RING_CIRCUMFERENCE).toFixed(1)} ${RING_CIRCUMFERENCE.toFixed(1)}`);
+  const num = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  num.setAttribute("class", "ring-num");
+  num.setAttribute("x", "42");
+  num.setAttribute("y", "47");
+  num.setAttribute("text-anchor", "middle");
+  num.textContent = `${got}/${total}`;
+  svg.append(track, fill, num);
+  const label = document.createElement("div");
+  label.className = "ring-label";
+  label.textContent = GRADE_LABELS[grade];
+  const pct = document.createElement("div");
+  pct.className = "ring-pct";
+  pct.textContent = `${Math.round(share * 100)}% earned`;
+  wrap.append(svg, label, pct);
+  return wrap;
+}
+
+function renderStats() {
+  const grid = document.getElementById("ringGrid");
+  grid.replaceChildren();
+  for (const g of ["platinum", "gold", "silver", "bronze"]) {
+    grid.append(buildRing(g, earnedCountOf(g), gradeCount(g)));
+  }
+  const bars = document.getElementById("kindBars");
+  bars.replaceChildren();
+  for (const k of Object.keys(KIND_LABELS)) {
+    const total = trophies.filter((t) => t.kind === k).length;
+    if (total === 0) continue;
+    const got = trophies.filter((t) => t.kind === k && earned.has(t.name)).length;
+    const row = document.createElement("div");
+    row.className = "kind-bar-row";
+    const name = document.createElement("span");
+    name.className = "kind-bar-name";
+    name.textContent = KIND_LABELS[k];
+    const track = document.createElement("div");
+    track.className = "kind-bar-track";
+    const fill = document.createElement("div");
+    fill.className = "kind-bar-fill";
+    fill.style.width = `${(got / total) * 100}%`;
+    track.append(fill);
+    const count = document.createElement("span");
+    count.className = "kind-bar-count";
+    count.textContent = `${got}/${total}`;
+    row.append(name, track, count);
+    bars.append(row);
+  }
+  const next = nextSuggested(trophies, earned);
+  const nextEl = document.getElementById("nextUp");
+  if (next) {
+    nextEl.replaceChildren();
+    nextEl.append(document.createTextNode("Next up: "));
+    const strong = document.createElement("strong");
+    strong.textContent = next.name;
+    nextEl.append(strong, document.createTextNode(` — ${next.description}`));
+  } else {
+    nextEl.textContent = "Every trophy is earned — the platinum is yours.";
+  }
+}
+
+// Daily planner: read the target date, build the plan, render the day cards.
+// Rebuilds on every renderList so ticking a trophy earned anywhere updates it.
+const planDateEl = document.getElementById("planDate");
+const planDaysEl = document.getElementById("planDays");
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function renderPlanner() {
+  if (!planDateEl.value) planDateEl.value = defaultTargetISO(todayISO());
+  const plan = buildPlan(trophies, earned, planDateEl.value, todayISO());
+  const prog = planProgress(trophies, earned);
+  document.getElementById("plannerProgress").textContent =
+    `${prog.got} of ${prog.total} earned (${prog.pct}%) · plan from ${plan.startISO} to ${plan.targetISO}`;
+  document.getElementById("plannerSummary").textContent = planSummary(plan);
+  planDaysEl.replaceChildren();
+  for (const day of plan.days) {
+    const card = document.createElement("div");
+    card.className = "plan-day" + (day.load === 0 ? " is-rest" : "");
+    const head = document.createElement("div");
+    head.className = "plan-day-head";
+    const h = document.createElement("h3");
+    h.textContent = day.label;
+    const focus = document.createElement("span");
+    focus.className = "plan-day-focus";
+    focus.textContent = day.focus;
+    const load = document.createElement("span");
+    load.className = "plan-day-load";
+    load.textContent = day.load === 0 ? "rest day" : `${day.load} troph${day.load === 1 ? "y" : "ies"}`;
+    head.append(h, focus, load);
+    card.append(head);
+    if (day.trophies.length === 0) {
+      const note = document.createElement("p");
+      note.className = "plan-rest-note";
+      note.textContent = "Nothing planned — a breather before the next push.";
+      card.append(note);
+    } else {
+      const ul = document.createElement("ul");
+      for (const t of day.trophies) {
+        const li = document.createElement("li");
+        li.className = "plan-trophy";
+        const badge = document.createElement("span");
+        badge.className = `plan-grade grade-${t.grade}`;
+        badge.textContent = t.grade;
+        const name = document.createElement("span");
+        name.className = "plan-name";
+        name.textContent = t.name;
+        const kindTag = document.createElement("span");
+        kindTag.className = "plan-kind";
+        kindTag.textContent = KIND_LABELS[t.kind] ?? t.kind;
+        const earnBtn = document.createElement("button");
+        earnBtn.type = "button";
+        earnBtn.className = "plan-earn" + (earned.has(t.name) ? " is-on" : "");
+        earnBtn.textContent = earned.has(t.name) ? "✓ Earned" : "Mark earned";
+        earnBtn.addEventListener("click", () => {
+          if (earned.has(t.name)) earned.delete(t.name);
+          else earned.add(t.name);
+          saveEarned();
+          renderList();
+        });
+        li.append(badge, name, kindTag, earnBtn);
+        ul.append(li);
+      }
+      card.append(ul);
+    }
+    planDaysEl.append(card);
+  }
+}
+
+document.getElementById("planBuildBtn").addEventListener("click", renderPlanner);
+planDateEl.addEventListener("change", renderPlanner);
+document.querySelector('.view-tab[data-view="planner"]').addEventListener("click", renderPlanner);
+
 // View tabs
 for (const tab of document.querySelectorAll(".view-tab")) {
   tab.addEventListener("click", () => {
@@ -544,6 +718,7 @@ if (params.get("demo") === "1" && earned.size === 0) {
   saveEarned();
 }
 spoilerEl.checked = spoiler;
+planDateEl.value = defaultTargetISO(todayISO());
 renderKindFilters();
 renderRoadmap();
 renderMissables();
