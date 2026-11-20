@@ -9,27 +9,27 @@
     }
   },
   {
-    "file": "2-roadmap.png",
-    "how": "headless Chromium screenshot of the app served locally; Roadmap to Platinum tab with demo progress (?demo=1)",
-    "path": "/?demo=1&view=roadmap",
+    "file": "2-quiz.png",
+    "how": "headless Chromium screenshot of the app served locally; Quiz tab with demo progress (?demo=1), a description-to-name question from the official trophy list",
+    "path": "/?demo=1&view=quiz",
     "viewport": {
       "height": 800,
       "width": 1280
     }
   },
   {
-    "file": "3-missables.png",
-    "how": "headless Chromium screenshot of the app served locally; Missables & saves tab with demo progress (?demo=1)",
-    "path": "/?demo=1&view=missables",
+    "file": "3-timeline.png",
+    "how": "headless Chromium screenshot of the app served locally; Timeline tab with demo progress (?demo=1) and two demo sessions dating the earned trophies by day",
+    "path": "/?demo=1&view=timeline",
     "viewport": {
       "height": 800,
       "width": 1280
     }
   },
   {
-    "file": "4-planner.png",
-    "how": "headless Chromium screenshot of the app served locally; Daily planner tab with demo progress (?demo=1), target date 30 days out, the missable trophy on day one and the 100% trophy last",
-    "path": "/?demo=1&view=planner",
+    "file": "4-nexthunt.png",
+    "how": "headless Chromium screenshot of the app served locally; Next hunt tab with demo progress (?demo=1), the missable trophy suggested first with its official description as the reason",
+    "path": "/?demo=1&view=nexthunt",
     "viewport": {
       "height": 800,
       "width": 1280

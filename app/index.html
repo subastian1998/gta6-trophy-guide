@@ -35,6 +35,11 @@
   <button type="button" class="view-tab" data-view="missables">Missables &amp; saves</button>
   <button type="button" class="view-tab" data-view="planner">Daily planner</button>
   <button type="button" class="view-tab" data-view="sessions">Sessions</button>
+  <button type="button" class="view-tab" data-view="nexthunt">Next hunt</button>
+  <button type="button" class="view-tab" data-view="timeline">Timeline</button>
+  <button type="button" class="view-tab" data-view="quiz">Quiz</button>
+  <button type="button" class="view-tab" data-view="print">Print</button>
+  <button type="button" class="view-tab" data-view="settings">Settings</button>
 </nav>
 
 <main>
@@ -62,6 +67,7 @@
         </select>
       </label>
       <label class="check"><input id="hideEarned" type="checkbox"> Hide earned</label>
+      <label class="check"><input id="notesOnly" type="checkbox"> Notes only</label>
       <label class="check spoiler-check"><input id="spoilerMode" type="checkbox"> Spoiler-free mode</label>
       <div class="io-buttons">
         <button id="exportBtn" type="button">Export progress</button>
@@ -116,6 +122,26 @@
       <p class="planner-intro">Log each play session and see which trophies it earned. Start a session before you play and end it when you stop — the log compares your checklist before and after, so nothing is typed twice.</p>
       <div id="sessionLog"></div>
     </div>
+  </section>
+
+  <section id="view-nexthunt" class="view" aria-label="What to hunt next">
+    <div class="stage"><h2>What to hunt next</h2><div id="nextHunt"></div></div>
+  </section>
+
+  <section id="view-timeline" class="view" aria-label="Earned timeline">
+    <div class="stage"><div id="timelineView"></div></div>
+  </section>
+
+  <section id="view-quiz" class="view" aria-label="Trophy quiz">
+    <div class="stage"><h2>Trophy quiz — test yourself</h2><div id="quizView"></div></div>
+  </section>
+
+  <section id="view-print" class="view" aria-label="Printable checklist">
+    <div class="stage"><h2>Printable checklist</h2><div id="printView"></div></div>
+  </section>
+
+  <section id="view-settings" class="view" aria-label="Settings">
+    <div class="stage"><h2>Settings</h2><div id="settingsView"></div></div>
   </section>
 </main>
 

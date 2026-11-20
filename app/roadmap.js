@@ -6,6 +6,25 @@
 // Round 2: a Stage 0 was added (do this before you start), every stage now
 // says exactly which trophies it covers and how many, and the missables
 // section gained a "what if you already missed it" answer.
+// Round 3: the roadmap itself is unchanged — the new tabs (journal,
+// next hunt, timeline, quiz, print, settings) are tools around it, not
+// new stages — so this file only gains a version marker and a count
+// helper for callers that summarise the stages.
+
+// Which round of the guide this roadmap belongs to.
+export const ROADMAP_VERSION = 3;
+
+// How many trophies the stages claim to cover between them, parsed from
+// each stage's "covers" line ("Covers N trophies: ..."). A stage without
+// a covers line contributes 0, so the total never invents a number.
+export function totalRoadmapTrophies() {
+  let total = 0;
+  for (const stage of ROADMAP_STAGES) {
+    const m = /Covers (\d+) troph/.exec(stage.covers ?? "");
+    if (m) total += Number(m[1]);
+  }
+  return total;
+}
 
 export const PLATINUM_FACTS = [
   { num: "55", label: "trophies — 1 platinum, 2 gold, 6 silver, 46 bronze" },

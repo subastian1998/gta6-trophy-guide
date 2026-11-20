@@ -1,9 +1,10 @@
 // Keyboard shortcuts for the checklist: keep the hands on the keyboard
 // while ticking trophies off. Shortcuts never fire while typing in a
 // field, and every shortcut is listed in the help modal (press ?).
-// The four number keys follow the tab order in the nav: 1 checklist,
-// 2 roadmap, 3 missables, 4 planner. The Sessions tab has no number
-// because it is a log, not a step in the hunt — click it instead.
+// The number keys follow the tab order in the nav: 1 checklist,
+// 2 roadmap, 3 missables, 4 planner, 5 next hunt, 6 timeline, 7 quiz,
+// 8 print, 9 settings. The Sessions tab has no number because it is a
+// log, not a step in the hunt — click it instead.
 // "e" marks the trophy in the open guide panel earned (or unmarks it),
 // which is the fastest way to tick trophies off while reading guides.
 
@@ -13,12 +14,17 @@ export const SHORTCUT_LIST = [
   { key: "2", label: "Go to Roadmap to Platinum" },
   { key: "3", label: "Go to Missables & saves" },
   { key: "4", label: "Go to Daily planner" },
+  { key: "5", label: "Go to Next hunt" },
+  { key: "6", label: "Go to Timeline" },
+  { key: "7", label: "Go to Quiz" },
+  { key: "8", label: "Go to Print" },
+  { key: "9", label: "Go to Settings" },
   { key: "e", label: "Mark the open trophy earned / unmark it" },
   { key: "?", label: "Show this list" },
   { key: "Esc", label: "Close a panel or modal" },
 ];
 
-const VIEW_KEYS = { 1: "checklist", 2: "roadmap", 3: "missables", 4: "planner" };
+const VIEW_KEYS = { 1: "checklist", 2: "roadmap", 3: "missables", 4: "planner", 5: "nexthunt", 6: "timeline", 7: "quiz", 8: "print", 9: "settings" };
 
 function isTyping(target) {
   return (
@@ -98,7 +104,7 @@ export function initShortcuts({ focusSearch, switchView, getOpenTrophy, onToggle
     } else if (e.key === "?") {
       e.preventDefault();
       openShortcutsHelp();
-    } else if (e.key >= "1" && e.key <= "4") {
+    } else if (e.key >= "1" && e.key <= "9") {
       switchView(VIEW_KEYS[e.key]);
     } else if (e.key === "e" || e.key === "E") {
       const t = getOpenTrophy();

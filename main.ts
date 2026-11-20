@@ -35,6 +35,17 @@ if (shotFiles.length < 3 || shotFiles.length > 4) {
   throw new Error(`expected 3 or 4 screenshots, found ${shotFiles.length}`);
 }
 
+// Round 3: the new tabs (journal, next-hunt, timeline, quiz, print,
+// settings) are plain files under app/, so they are copied with the rest
+// of it — but a missing one would silently ship a broken tab, so refuse
+// early here instead of handing the grader an app whose imports 404.
+const round3Files = ["journal.js", "next-hunt.js", "timeline.js", "quiz.js", "print.js", "settings.js"];
+for (const f of round3Files) {
+  if (!existsSync(join(repoRoot, "app", f))) {
+    throw new Error(`missing round 3 feature file: app/${f}`);
+  }
+}
+
 // The caps below mirror the scorer's gate: at most 4 screenshots, each at
 // most 256 KiB; app/ at most 993 files and directories and 48 MiB; the
 // dossier text at most 160 KiB. buildDossier refuses an entry past them,

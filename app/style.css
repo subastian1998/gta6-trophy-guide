@@ -469,3 +469,242 @@ footer p { margin: 6px 0; }
 .shortcuts-table td:first-child { width: 64px; }
 .shortcuts-table kbd { background: var(--bg-2); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 2px 8px; font-family: inherit; font-weight: 700; }
 .shortcuts-close-btn { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; padding: 8px 14px; font-weight: 700; font-size: 14px; }
+
+/* Round 3 — display settings: light theme, text sizes, compact cards.
+   The dark palette above stays the default; the light palette only
+   overrides the colour variables, so every component follows it. */
+html[data-theme="light"] {
+  --ink: #241a12;
+  --ink-dim: #4d4238;
+  --ink-faint: #7a6e60;
+  --bg: #f6f1e7;
+  --bg-2: #fffaf0;
+  --card: #fffdf7;
+  --card-2: #f3ead8;
+  --line: #d8cbb2;
+  --accent: #c14a24;
+  --accent-2: #9a6200;
+  --teal: #0f766e;
+  --danger: #b3261e;
+  --ok: #1e7d32;
+}
+html[data-theme="light"] body {
+  background: linear-gradient(180deg, #fdf6e3 0%, var(--bg) 240px, #efe6d2 100%);
+}
+html[data-theme="light"] .progress-bar,
+html[data-theme="light"] .kind-bar-track { background: #e9dfca; }
+html[data-theme="light"] .stat-ring .ring-track { stroke: #e9dfca; }
+html[data-theme="light"] .missable-strip,
+html[data-theme="light"] .callout { background: #fbe9e7; }
+html[data-theme="light"] .callout.safe { background: #e0f2f1; }
+html[data-font-size="small"] { font-size: 14px; }
+html[data-font-size="medium"] { font-size: 16px; }
+html[data-font-size="large"] { font-size: 18px; }
+body.compact-cards .card { padding: 10px 12px; gap: 5px; }
+body.compact-cards .card .guide-preview { -webkit-line-clamp: 2; }
+body.compact-cards .list { gap: 10px; }
+
+/* Round 3 — journal (per-trophy private notes) */
+.journal-section { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; }
+.journal-hint { font-size: 13px; color: var(--ink-faint); margin: 0 0 8px; }
+.journal-textarea {
+  width: 100%;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+.journal-status { font-size: 12px; color: var(--ink-faint); margin: 6px 0 0; }
+.journal-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.journal-clear-btn, .journal-export-btn {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.tag.notes-badge { border-color: var(--teal); color: var(--teal); font-weight: 700; }
+
+/* Round 3 — next hunt suggester */
+.hunt-intro { margin: 0 0 12px; }
+.hunt-head { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.hunt-count { margin: 0; font-weight: 700; font-size: 14px; }
+.hunt-refresh-btn, .hunt-reset-btn {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #241016;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.hunt-refresh-btn:disabled { opacity: .45; cursor: default; }
+.hunt-reset-btn { background: transparent; border-color: var(--line); color: var(--ink); margin-top: 10px; }
+.hunt-list { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; }
+.hunt-item { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.hunt-item.is-missable { border-color: var(--danger); border-width: 2px; }
+.hunt-item-top { display: flex; gap: 10px; align-items: center; }
+.hunt-name { font-size: 16px; }
+.hunt-reason { margin: 8px 0 10px; font-size: 14px; color: var(--ink-dim); font-style: italic; }
+.hunt-actions { display: flex; gap: 8px; }
+.hunt-dismiss-btn {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-faint);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.hunt-done { margin: 14px 0 0; color: var(--ink-dim); }
+
+/* Round 3 — earned timeline */
+.timeline-summary { font-weight: 700; font-size: 14px; }
+.timeline-note { font-size: 13px; color: var(--ink-faint); }
+.timeline-day-head { font-size: 16px; margin: 18px 0 8px; }
+.timeline-items { list-style: none; margin: 0; padding: 0 0 0 8px; border-left: 2px solid var(--line); }
+.timeline-item { display: flex; gap: 12px; padding: 8px 0; align-items: flex-start; }
+.timeline-dot {
+  flex: 0 0 auto;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  margin-top: 4px;
+  margin-left: -16px;
+  border: 2px solid var(--bg-2);
+}
+.timeline-dot.grade-platinum { background: var(--platinum); }
+.timeline-dot.grade-gold { background: var(--gold); }
+.timeline-dot.grade-silver { background: var(--silver); }
+.timeline-dot.grade-bronze { background: var(--bronze); }
+.timeline-body { display: flex; flex-direction: column; gap: 2px; }
+.timeline-name { font-size: 15px; }
+.timeline-meta { font-size: 12px; color: var(--ink-faint); }
+.timeline-desc { margin: 2px 0 6px; font-size: 13px; color: var(--ink-dim); font-style: italic; }
+.timeline-open-btn {
+  align-self: flex-start;
+  border: 1px solid var(--accent-2);
+  background: transparent;
+  color: var(--accent-2);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-weight: 700;
+  font-size: 12px;
+}
+.timeline-empty { color: var(--ink-dim); }
+
+/* Round 3 — quiz */
+.quiz-intro { margin: 0 0 12px; }
+.quiz-bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.quiz-modes { display: flex; gap: 6px; flex-wrap: wrap; }
+.quiz-mode-btn {
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--ink-dim);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.quiz-mode-btn.is-active { background: var(--teal); border-color: var(--teal); color: #06231f; }
+.quiz-score { margin: 0; font-size: 13px; color: var(--ink-dim); font-weight: 700; }
+.quiz-card { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-top: 14px; }
+.quiz-prompt-label { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent-2); font-weight: 700; }
+.quiz-prompt { margin: 0 0 14px; font-size: 17px; font-weight: 700; }
+.quiz-choices { display: grid; gap: 8px; }
+.quiz-choice {
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.quiz-choice:hover:not(:disabled) { border-color: var(--accent-2); }
+.quiz-choice.is-correct { border-color: var(--ok); background: #12351a; color: #c9f2cd; }
+.quiz-choice.is-wrong { border-color: var(--danger); opacity: .7; }
+.quiz-feedback { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.quiz-verdict { margin: 0 0 8px; width: 100%; font-size: 14px; }
+.quiz-hint { margin: 0; font-size: 13px; color: var(--ink-faint); }
+.quiz-next-btn {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #241016;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.quiz-foot { font-size: 13px; color: var(--ink-faint); margin: 12px 0 0; }
+
+/* Round 3 — print / plain-text checklist */
+.print-intro { margin: 0 0 12px; }
+.print-preview {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 480px;
+  overflow-y: auto;
+  margin: 0 0 12px;
+}
+.print-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.print-copy-btn, .print-download-btn, .print-print-btn {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.print-print-btn { border-color: var(--accent); background: var(--accent); color: #241016; }
+.print-status { font-size: 13px; color: var(--ink-faint); margin: 8px 0 0; }
+
+/* Round 3 — settings panel */
+.settings-intro { margin: 0 0 8px; }
+.settings-current { font-size: 14px; font-weight: 700; margin: 0 0 14px; }
+.settings-form { display: grid; gap: 12px; max-width: 420px; }
+.settings-field { font-size: 13px; color: var(--ink-dim); font-weight: 700; }
+.settings-select {
+  display: block;
+  margin-top: 4px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-width: 220px;
+}
+.settings-check { display: flex; gap: 8px; align-items: center; padding: 6px 0; }
+.settings-reset-btn {
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.settings-note { font-size: 13px; color: var(--ink-faint); margin: 12px 0 0; }
+
+/* Round 3 — print stylesheet: only the checklist prints. Tabs, toolbar
+   buttons and the preview frame are hidden; the page prints in plain ink. */
+@media print {
+  .views, .toolbar, .io-buttons, .missable-strip, footer,
+  .print-actions, .detail, .scrim, .progress-card { display: none !important; }
+  body { background: #fff; color: #000; }
+  .print-preview { border: none; max-height: none; overflow: visible; font-size: 12px; color: #000; }
+  .stage { border: none; padding: 0; }
+}

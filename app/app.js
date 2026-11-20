@@ -4,10 +4,18 @@
 // Roadmap content: app/roadmap.js. No network requests beyond the local files.
 import { PLATINUM_FACTS, ROADMAP_STAGES, MISSABLE_NOTES } from "./roadmap.js";
 import { buildPlan, defaultTargetISO, nextSuggested, planProgress, planSummary } from "./planner.js";
-import { initSessions } from "./sessions.js";
+import { initSessions, loadSessions, saveSessions } from "./sessions.js";
 import { openTrophyModal } from "./trophy-modal.js";
 import { initShortcuts } from "./shortcuts.js";
 import { renderWeekOverview } from "./planner-week.js";
+// Round 3 features: per-trophy notes, next-hunt suggester, earned
+// timeline, flashcard quiz, plain-text export, and display settings.
+import { hasNote, notesBadgeText, renderJournalSection } from "./journal.js";
+import { renderNextHunt } from "./next-hunt.js";
+import { renderTimeline } from "./timeline.js";
+import { renderQuiz } from "./quiz.js";
+import { renderPrintPanel } from "./print.js";
+import { applySettings, loadSettings, renderSettingsPanel } from "./settings.js";
 
 const STORAGE_KEY = "gta6-trophy-guide-v1";
 const SPOILER_KEY = "gta6-trophy-guide-spoiler";
@@ -30,6 +38,7 @@ const emptyEl = document.getElementById("emptyState");
 const searchEl = document.getElementById("search");
 const gradeEl = document.getElementById("gradeFilter");
 const hideEarnedEl = document.getElementById("hideEarned");
+const notesOnlyEl = document.getElementById("notesOnly");
 const spoilerEl = document.getElementById("spoilerMode");
 const filterNoteEl = document.getElementById("filterNote");
 const spoilerNoteEl = document.getElementById("spoilerNote");
@@ -129,6 +138,8 @@ function matchesFilters(t) {
   if (kind !== "all" && t.kind !== kind) return false;
   if (gradeEl.value !== "all" && t.grade !== gradeEl.value) return false;
   if (hideEarnedEl.checked && earned.has(t.name)) return false;
+  // Notes filter (round 3): show only trophies with a private note.
+  if (notesOnlyEl.checked && !hasNote(t.id)) return false;
   const q = searchEl.value.trim().toLowerCase();
   if (q && !(t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || (t.guide ?? "").toLowerCase().includes(q) || (t.target ?? "").toLowerCase().includes(q) || (KIND_LABELS[t.kind] ?? "").toLowerCase().includes(q))) return false;
   return true;
@@ -212,6 +223,13 @@ function buildCard(t) {
     const tag = document.createElement("span");
     tag.className = "tag unconfirmed";
     tag.textContent = "Method unconfirmed";
+    meta.append(tag);
+  }
+  // Round 3: a badge when this trophy has a private journal note.
+  if (hasNote(t.id)) {
+    const tag = document.createElement("span");
+    tag.className = "tag notes-badge";
+    tag.textContent = notesBadgeText(t.id);
     meta.append(tag);
   }
   card.append(meta);
@@ -363,6 +381,11 @@ function openDetail(t) {
     });
   });
   detailBodyEl.append(relatedBtn);
+
+  // Round 3: private per-trophy notes, saved in this browser only.
+  // onChange re-renders the list so the card badge and Notes filter
+  // follow the note as it is typed.
+  detailBodyEl.append(renderJournalSection(t, trophies, { onChange: renderList }));
 
   detailEl.hidden = false;
   scrimEl.hidden = false;
@@ -687,6 +710,7 @@ document.getElementById("sortSelect").addEventListener("change", (e) => {
 });
 gradeEl.addEventListener("change", renderList);
 hideEarnedEl.addEventListener("change", renderList);
+notesOnlyEl.addEventListener("change", renderList);
 spoilerEl.addEventListener("change", () => {
   spoiler = spoilerEl.checked;
   saveSpoiler();
@@ -741,6 +765,37 @@ if (params.get("demo") === "1" && earned.size === 0) {
     "Whip It Good", "On the Spot", "Treat Yo Self", "Cunning Stunts",
   ]);
   saveEarned();
+  // Demo sessions (round 3): two finished sessions that date the demo
+  // trophies, so the Timeline tab has something real to show in
+  // screenshots. Only seeded when no sessions exist yet.
+  if (loadSessions().length === 0) {
+    const demoNames = [...earned];
+    const dayAgo = (n) => {
+      const d = new Date();
+      d.setDate(d.getDate() - n);
+      return d.toISOString();
+    };
+    saveSessions([
+      {
+        id: "demo-s2",
+        startedAt: dayAgo(0),
+        endedAt: dayAgo(0),
+        startEarned: demoNames.slice(0, 8),
+        endEarned: demoNames.slice(0, 12),
+        note: "Chapter 1 cleanup",
+        done: true,
+      },
+      {
+        id: "demo-s1",
+        startedAt: dayAgo(2),
+        endedAt: dayAgo(2),
+        startEarned: [],
+        endEarned: demoNames.slice(0, 8),
+        note: "Opening session",
+        done: true,
+      },
+    ]);
+  }
 }
 spoilerEl.checked = spoiler;
 planDateEl.value = defaultTargetISO(todayISO());
@@ -766,6 +821,40 @@ initShortcuts({
   helpButton: document.getElementById("shortcutsBtn"),
 });
 renderList();
+
+// Round 3 wiring: apply saved display settings before the first paint
+// that depends on them, then mount the five new tabs. Every module
+// re-reads the live earned set through getEarned, so ticking a trophy
+// anywhere stays in step. Re-rendering a tab on visit refreshes it from
+// the current state (the quiz starts a fresh round each visit, by design).
+applySettings(loadSettings());
+const round3Tabs = {
+  nexthunt: renderNextHunt(document.getElementById("nextHunt"), {
+    trophies,
+    getEarned: () => earned,
+    onOpenGuide: (t) => openDetail(t),
+  }),
+  timeline: renderTimeline(document.getElementById("timelineView"), {
+    trophies,
+    getEarned: () => earned,
+    onOpenGuide: (t) => openDetail(t),
+  }),
+  quiz: renderQuiz(document.getElementById("quizView"), {
+    trophies,
+    onOpenGuide: (t) => openDetail(t),
+  }),
+  print: renderPrintPanel(document.getElementById("printView"), {
+    trophies,
+    getEarned: () => earned,
+  }),
+  settings: renderSettingsPanel(document.getElementById("settingsView"), {}),
+};
+for (const tab of document.querySelectorAll(".view-tab")) {
+  tab.addEventListener("click", () => {
+    const view = round3Tabs[tab.dataset.view];
+    if (view) view.render();
+  });
+}
 if (params.get("view")) {
   const tab = document.querySelector(`.view-tab[data-view="${params.get("view")}"]`);
   if (tab) tab.click();

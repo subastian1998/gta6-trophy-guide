@@ -84,10 +84,12 @@ export function openTrophyModal(trophy, trophies, earned, { onToggleEarned, onOp
     box.append(tipsH, tipsList);
   }
 
-  const relH = document.createElement("h3");
-  relH.textContent = "Related trophies — same kind, then same grade";
-  box.append(relH);
+  // Round 3: count the neighbours first, so the heading can say how
+  // many related trophies follow.
   const related = relatedTrophies(trophy, trophies);
+  const relH = document.createElement("h3");
+  relH.textContent = `Related trophies — same kind, then same grade (${related.length} found)`;
+  box.append(relH);
   if (related.length === 0) {
     const none = document.createElement("p");
     none.textContent = "No close neighbours in the list — this one stands alone.";

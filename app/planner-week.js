@@ -117,3 +117,19 @@ export function renderWeekOverview(root, plan, earned) {
       : `${done} of ${total} planned trophies already earned across ${weeks.length} week${weeks.length === 1 ? "" : "s"}.`;
   root.append(foot);
 }
+
+// Round 3: the same week split as plain data, for callers that want the
+// numbers without rendering — one entry per week with its planned and
+// earned counts and its dominant kind. Weeks are the same strict 7-day
+// chunks groupIntoWeeks cuts, so the numbers always match the overview.
+export function summariseWeeks(plan, earned) {
+  return groupIntoWeeks(plan.days).map((days, i) => {
+    const trophies = days.flatMap((d) => d.trophies);
+    return {
+      week: i + 1,
+      planned: trophies.length,
+      earned: trophies.filter((t) => earned.has(t.name)).length,
+      focus: weekFocus(trophies),
+    };
+  });
+}

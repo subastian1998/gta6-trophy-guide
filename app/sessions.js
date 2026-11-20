@@ -43,6 +43,26 @@ export function earnedDuring(session, earnedNow) {
   return after.filter((name) => !before.has(name));
 }
 
+// Round 3 (timeline): the first finished session in which each trophy
+// was earned, as a Map of name -> session. A trophy earned in several
+// sessions maps to the earliest one, so the timeline dates it to the
+// day it first appeared. Open sessions are skipped — only a finished
+// session proves a date — and names in no finished session are absent,
+// never guessed. earnedNow is accepted for symmetry with earnedDuring
+// but is not used: only closed sessions carry a date.
+export function earnedDatesFromSessions(sessions, earnedNow) {
+  const first = new Map();
+  const done = (sessions ?? [])
+    .filter((s) => s && s.done && Array.isArray(s.endEarned))
+    .sort((a, b) => String(a.endedAt ?? a.startedAt).localeCompare(String(b.endedAt ?? b.startedAt)));
+  for (const session of done) {
+    for (const name of earnedDuring(session, earnedNow)) {
+      if (!first.has(name)) first.set(name, session);
+    }
+  }
+  return first;
+}
+
 export function formatSessionTime(iso) {
   const d = new Date(iso);
   return d.toLocaleString(undefined, {

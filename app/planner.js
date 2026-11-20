@@ -193,3 +193,18 @@ export function planProgress(trophies, earnedNames) {
   const got = trophies.filter((t) => earned.has(t.name)).length;
   return { got, total: trophies.length, pct: Math.round((got / trophies.length) * 100) };
 }
+
+// Round 3: how many trophies are still unearned in each grade, as an
+// object like { bronze: 38, silver: 5, gold: 2, platinum: 1 }. The
+// next-hunt suggester works from the same ordering — lowest grade
+// first — and this count is the one-line summary of what is left at
+// each tier. Grades with nothing left are omitted.
+export function countUnearnedByGrade(trophies, earnedNames) {
+  const earned = earnedNames instanceof Set ? earnedNames : new Set(earnedNames);
+  const counts = {};
+  for (const t of trophies) {
+    if (earned.has(t.name)) continue;
+    counts[t.grade] = (counts[t.grade] ?? 0) + 1;
+  }
+  return counts;
+}

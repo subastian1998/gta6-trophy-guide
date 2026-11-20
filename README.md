@@ -19,6 +19,15 @@ Five hidden trophies have no confirmed unlock method at launch (In The Beginning
 - **Missables & saves** — the Chapter 1 meditation, the other 17 spots, the time-sensitive Race Against Yago, the five-save plan, and what to do if you already missed the meditation.
 - **Export / import / reset** — progress downloads as JSON and imports back; reset asks first.
 
+## Round 3 — new in this round
+
+- **Journal** — a private notes box in every trophy's guide panel, saved per trophy in this browser (word count + last-edited time), a Notes badge on cards with notes, a "Notes only" filter, and an export of all notes as one `.txt` file.
+- **Next hunt** — five suggestions at a time from the trophies not earned yet: the missable trophy first, then the lowest grade. Each reason quotes only the trophy's official description. Refresh deals the next five; Dismiss drops one from the rotation.
+- **Timeline** — earned trophies grouped by day, newest first, with grade-coloured dots and a first/latest summary. Dates come from the play-session log; trophies ticked outside a session sit under "Date unknown" rather than getting a guessed date.
+- **Quiz** — flashcards from the official list only: description → name, or name → description, four choices each. Score and streak live for the visit only; revealing an answer links to that trophy's guide.
+- **Print** — all 55 trophies as a plain-text checklist (`[x]`/`[ ]`, grade, kind, missable flag) with Copy to clipboard, Download `.txt`, and a print stylesheet that prints only the list.
+- **Settings** — theme (auto/dark/light), text size (small/medium/large) and compact cards, saved in this browser and applied on load.
+
 ## Run it
 
 ```sh
@@ -40,9 +49,9 @@ mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 Four renders of the app itself, taken with headless Chromium against the local server:
 
 1. `1-cover.png` — checklist with demo progress (12 earned) and the guide for Positive Mental Attitude open.
-2. `2-roadmap.png` — the Roadmap to Platinum tab.
-3. `3-missables.png` — the Missables & saves tab.
-4. `4-spoiler.png` — story filter with spoiler-free mode on: earned story trophies revealed, unearned ones hidden.
+2. `2-quiz.png` — the Quiz tab with demo progress (?demo=1), a description → name question.
+3. `3-timeline.png` — the Timeline tab with demo progress (?demo=1) and two demo sessions dating the earned trophies.
+4. `4-nexthunt.png` — the Next hunt tab with demo progress (?demo=1), the missable trophy suggested first.
 
 ## Sources
 
