@@ -34,6 +34,7 @@
   <button type="button" class="view-tab" data-view="roadmap">Roadmap to Platinum</button>
   <button type="button" class="view-tab" data-view="missables">Missables &amp; saves</button>
   <button type="button" class="view-tab" data-view="planner">Daily planner</button>
+  <button type="button" class="view-tab" data-view="sessions">Sessions</button>
 </nav>
 
 <main>
@@ -66,6 +67,7 @@
         <button id="exportBtn" type="button">Export progress</button>
         <label class="import-btn">Import progress <input id="importFile" type="file" accept="application/json,.json"></label>
         <button id="resetBtn" type="button" class="quiet">Reset</button>
+        <button id="shortcutsBtn" type="button" class="quiet">Keyboard shortcuts (?)</button>
       </div>
     </div>
     <p class="toolbar-note" id="filterNote"></p>
@@ -103,7 +105,16 @@
         <p class="planner-progress" id="plannerProgress"></p>
       </div>
       <p class="planner-summary" id="plannerSummary"></p>
+      <div id="weekOverview"></div>
       <div id="planDays"></div>
+    </div>
+  </section>
+
+  <section id="view-sessions" class="view" aria-label="Play session log">
+    <div class="stage">
+      <h2>Play sessions — your log</h2>
+      <p class="planner-intro">Log each play session and see which trophies it earned. Start a session before you play and end it when you stop — the log compares your checklist before and after, so nothing is typed twice.</p>
+      <div id="sessionLog"></div>
     </div>
   </section>
 </main>

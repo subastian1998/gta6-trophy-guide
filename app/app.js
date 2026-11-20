@@ -4,6 +4,10 @@
 // Roadmap content: app/roadmap.js. No network requests beyond the local files.
 import { PLATINUM_FACTS, ROADMAP_STAGES, MISSABLE_NOTES } from "./roadmap.js";
 import { buildPlan, defaultTargetISO, nextSuggested, planProgress, planSummary } from "./planner.js";
+import { initSessions } from "./sessions.js";
+import { openTrophyModal } from "./trophy-modal.js";
+import { initShortcuts } from "./shortcuts.js";
+import { renderWeekOverview } from "./planner-week.js";
 
 const STORAGE_KEY = "gta6-trophy-guide-v1";
 const SPOILER_KEY = "gta6-trophy-guide-spoiler";
@@ -32,6 +36,7 @@ const spoilerNoteEl = document.getElementById("spoilerNote");
 const detailEl = document.getElementById("detail");
 const detailBodyEl = document.getElementById("detailBody");
 const scrimEl = document.getElementById("scrim");
+let detailTrophy = null;
 
 const doc = await (await fetch("data/trophies.json")).json();
 const trophies = doc.trophies;
@@ -256,6 +261,7 @@ function buildCard(t) {
 }
 
 function openDetail(t) {
+  detailTrophy = t;
   detailBodyEl.replaceChildren();
   const badge = document.createElement("span");
   badge.className = `grade-badge grade-${t.grade}`;
@@ -341,11 +347,29 @@ function openDetail(t) {
   });
   detailBodyEl.append(earnBtn);
 
+  const relatedBtn = document.createElement("button");
+  relatedBtn.type = "button";
+  relatedBtn.className = "btn-guide";
+  relatedBtn.textContent = "Related trophies — what next?";
+  relatedBtn.addEventListener("click", () => {
+    openTrophyModal(t, trophies, earned, {
+      onToggleEarned: (x) => {
+        if (earned.has(x.name)) earned.delete(x.name);
+        else earned.add(x.name);
+        saveEarned();
+        renderList();
+      },
+      onOpenGuide: (x) => openDetail(x),
+    });
+  });
+  detailBodyEl.append(relatedBtn);
+
   detailEl.hidden = false;
   scrimEl.hidden = false;
 }
 
 function closeDetail() {
+  detailTrophy = null;
   detailEl.hidden = true;
   scrimEl.hidden = true;
 }
@@ -636,6 +660,7 @@ function renderPlanner() {
     }
     planDaysEl.append(card);
   }
+  renderWeekOverview(document.getElementById("weekOverview"), plan, earned);
 }
 
 document.getElementById("planBuildBtn").addEventListener("click", renderPlanner);
@@ -722,6 +747,24 @@ planDateEl.value = defaultTargetISO(todayISO());
 renderKindFilters();
 renderRoadmap();
 renderMissables();
+initSessions({
+  root: document.getElementById("sessionLog"),
+  getEarned: () => earned,
+  onChange: renderList,
+});
+initShortcuts({
+  focusSearch: () => searchEl.focus(),
+  switchView: (view) => document.querySelector(`.view-tab[data-view="${view}"]`)?.click(),
+  getOpenTrophy: () => detailTrophy,
+  onToggleEarned: (t) => {
+    if (earned.has(t.name)) earned.delete(t.name);
+    else earned.add(t.name);
+    saveEarned();
+    renderList();
+    openDetail(t);
+  },
+  helpButton: document.getElementById("shortcutsBtn"),
+});
 renderList();
 if (params.get("view")) {
   const tab = document.querySelector(`.view-tab[data-view="${params.get("view")}"]`);

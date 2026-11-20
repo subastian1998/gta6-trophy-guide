@@ -416,3 +416,56 @@ footer p { margin: 6px 0; }
   color: var(--ink);
 }
 
+
+/* Play-session log (Sessions tab) */
+.session-intro { margin: 0 0 12px; font-size: 14px; color: var(--ink); }
+.session-controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.session-note-input { flex: 1 1 260px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-2); color: var(--ink); font-size: 14px; }
+.session-start-btn, .session-end-btn { border: 1px solid var(--ok); background: var(--ok); color: #0b2b0e; border-radius: 8px; padding: 8px 14px; font-weight: 700; font-size: 14px; }
+.session-active { margin: 0; font-size: 14px; color: var(--ink); }
+.session-list-head { margin: 18px 0 4px; font-size: 15px; }
+.session-total { margin: 0 0 8px; font-size: 13px; color: var(--ink-faint); }
+.session-list { list-style: none; margin: 0; padding: 0; }
+.session-item { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+.session-item-top { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.session-when { font-weight: 700; font-size: 14px; }
+.session-duration { color: var(--ink-faint); font-size: 13px; }
+.session-count { color: var(--accent-2); font-size: 13px; font-weight: 700; margin-left: auto; }
+.session-note { margin: 6px 0 0; font-size: 14px; font-style: italic; color: var(--ink); }
+.session-gained { margin: 6px 0 0; font-size: 13px; color: var(--ink); }
+.session-delete { margin-top: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink-faint); border-radius: 8px; padding: 4px 10px; font-size: 12px; }
+
+/* Weekly overview inside the Daily planner tab */
+.week-head { margin: 18px 0 4px; font-size: 16px; }
+.week-intro { margin: 0 0 8px; font-size: 13px; color: var(--ink-faint); }
+.week-list { list-style: none; margin: 0 0 8px; padding: 0; }
+.week-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 7px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.week-row:first-child { border-top: none; }
+.week-row.is-rest { opacity: .75; }
+.week-label { font-weight: 700; flex: 0 0 64px; }
+.week-range { color: var(--ink-faint); font-size: 13px; flex: 1 1 160px; }
+.week-focus { color: var(--accent-2); font-size: 13px; font-weight: 700; }
+.week-bar-track { flex: 1 1 120px; height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
+.week-bar-fill { height: 100%; background: var(--ok); }
+.week-count { color: var(--ink-faint); font-size: 13px; flex: 0 0 auto; }
+.week-foot { margin: 4px 0 14px; font-size: 13px; color: var(--ink-faint); }
+
+/* Related-trophy modal */
+.trophy-modal-overlay, .shortcuts-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, .55); display: flex; align-items: flex-start; justify-content: center; padding: 48px 16px 16px; z-index: 60; overflow-y: auto; }
+.trophy-modal, .shortcuts-help { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; max-width: 560px; width: 100%; position: relative; }
+.trophy-modal h2, .shortcuts-help h2 { margin: 8px 0 8px; font-size: 20px; }
+.trophy-modal-close { position: absolute; top: 8px; right: 12px; border: none; background: transparent; color: var(--ink); font-size: 26px; line-height: 1; padding: 4px 8px; }
+.trophy-modal-meta { font-size: 13px; color: var(--ink-faint); margin: 8px 0 12px; }
+.related-list { list-style: none; margin: 0 0 12px; padding: 0; }
+.related-btn { display: flex; gap: 10px; justify-content: space-between; width: 100%; text-align: left; background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; margin-bottom: 6px; color: var(--ink); font-size: 14px; }
+.related-btn.is-earned { border-color: var(--ok); }
+.related-name { font-weight: 700; }
+.related-why { color: var(--ink-faint); font-size: 12px; flex: 0 0 auto; }
+.trophy-modal-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+/* Keyboard shortcuts help modal */
+.shortcuts-table { border-collapse: collapse; margin: 10px 0 14px; width: 100%; font-size: 14px; }
+.shortcuts-table td { padding: 6px 8px; border-top: 1px solid var(--line); }
+.shortcuts-table td:first-child { width: 64px; }
+.shortcuts-table kbd { background: var(--bg-2); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 2px 8px; font-family: inherit; font-weight: 700; }
+.shortcuts-close-btn { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; padding: 8px 14px; font-weight: 700; font-size: 14px; }
