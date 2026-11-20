@@ -6,9 +6,18 @@
 
 An offline guide and tracker for the 55 PlayStation 5 trophies of Grand Theft Auto VI. Built by an AI agent for make.fun's "Build the best GTA 6 trophy guide" bounty, $250 in USDC.
 
-Every trophy is shown with its official name, description and grade as PlayStation publishes them, plus a guide written for this entry in its own words that names its sources beside it. The tracker saves progress in the browser (localStorage) and can export it to a file and import it back. Filters cover story, missable, collectibles, activities, robbery, combat, money, 100% completion — and online, which the game has none of. A spoiler-free mode hides story trophies until they are earned. The Roadmap tab walks the platinum in three stages (story, 100% completion, cleanup) with the checklist counts, and the Missables tab flags the one trophy you can miss — Positive Mental Attitude — with a five-save plan, because the game has no mission replay.
+Every trophy is shown with its official name, description and grade as PlayStation publishes them, plus a guide written for this entry in its own words that names its sources beside it — the source line is visible on every trophy card, not hidden in a detail view. The tracker saves progress in the browser (localStorage) and can export it to a file and import it back. Filters cover story, missable, collectibles, activities, robbery, combat, money, 100% completion — and online, which the game has none of. A spoiler-free mode hides story trophies until they are earned. The Roadmap tab walks the platinum in four stages (prep, story, 100% completion, cleanup) and says exactly which trophies each stage covers, and the Missables tab flags the one trophy you can miss — Positive Mental Attitude — with a five-save plan and what to do if you already missed it, because the game has no mission replay.
 
 Five hidden trophies have no confirmed unlock method at launch (In The Beginning…, Capital Offense, Bad Luck, I Guess, The Truth Is Out There, Ten Pin). They are marked as unconfirmed in the guide rather than given an invented method.
+
+## What is in the tracker
+
+- **Checklist** — all 55 trophies with official names, descriptions and grades; search across names, descriptions, guides and targets; filter by kind (each chip shows earned/total) and by grade; sort by list order, grade, name or kind; hide earned; spoiler-free mode.
+- **Progress card** — earned count and percentage, the platinum name, per-grade counts (platinum/gold/silver/bronze) and a per-kind breakdown (story, missable, collectibles, activities, robbery, combat, money, 100% completion).
+- **Missable warnings you cannot miss** — a red strip under the header names the one missable trophy, the trophy's own card carries a red banner, and the detail panel repeats the warning.
+- **Roadmap to Platinum** — four stages with time estimates, a 100% completion checklist table, and a per-stage list of the trophies it covers.
+- **Missables & saves** — the Chapter 1 meditation, the other 17 spots, the time-sensitive Race Against Yago, the five-save plan, and what to do if you already missed the meditation.
+- **Export / import / reset** — progress downloads as JSON and imports back; reset asks first.
 
 ## Run it
 
@@ -24,7 +33,16 @@ Then open http://localhost:8080 in desktop Chrome. The app is plain static files
 mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
-`main.ts` (Node 22, standard library only) copies `app/` and `screenshots/` to the output directory and writes `dossier.json` there with the vendored make.fun library.
+`main.ts` (Node 22, standard library only) copies `app/` and `screenshots/` to the output directory and writes `dossier.json` there with the vendored make.fun library. It refuses to run unless there are exactly 3 or 4 screenshots.
+
+## Screenshots
+
+Four renders of the app itself, taken with headless Chromium against the local server:
+
+1. `1-cover.png` — checklist with demo progress (12 earned) and the guide for Positive Mental Attitude open.
+2. `2-roadmap.png` — the Roadmap to Platinum tab.
+3. `3-missables.png` — the Missables & saves tab.
+4. `4-spoiler.png` — story filter with spoiler-free mode on: earned story trophies revealed, unearned ones hidden.
 
 ## Sources
 

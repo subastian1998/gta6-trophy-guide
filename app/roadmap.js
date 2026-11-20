@@ -2,6 +2,10 @@
 // official trophy descriptions and the published launch-week guides.
 // Sources: KeenGamer's platinum roadmap and Output Lag's trophy list
 // (full URLs are in the app footer and beside each trophy's guide).
+//
+// Round 2: a Stage 0 was added (do this before you start), every stage now
+// says exactly which trophies it covers and how many, and the missables
+// section gained a "what if you already missed it" answer.
 
 export const PLATINUM_FACTS = [
   { num: "55", label: "trophies — 1 platinum, 2 gold, 6 silver, 46 bronze" },
@@ -12,14 +16,30 @@ export const PLATINUM_FACTS = [
   { num: "0", label: "difficulty trophies, mission medals, or online trophies" },
   { num: "15", label: "manual save slots — use them, there is no mission replay" },
   { num: "1", label: "potentially missable trophy: Positive Mental Attitude" },
+  { num: "3 + 1", label: "stages: prep, story, 100%, then cleanup" },
+  { num: "5", label: "hidden trophies with no confirmed method yet at launch" },
 ];
 
 export const ROADMAP_STAGES = [
+  {
+    title: "Stage 0 — Before you start: one save habit saves the platinum",
+    time: "5 minutes · do this before the first mission",
+    intro:
+      "There is no mission replay and no New Game Plus in GTA VI, so a manual save is your only way back. Set the habit up now and the rest of the roadmap is safe.",
+    covers: "Covers 1 trophy directly (Positive Mental Attitude) and protects all 13 story trophies",
+    steps: [
+      "Turn on spoiler-free mode in the Checklist tab if you do not want story trophy names spoiled — it hides story trophies until you earn them.",
+      "Keep a manual save at the start of every chapter, plus one untouched save from just before the final mission. That is five saves to protect; rotate the other ten slots freely.",
+      "Never use cheats on your trophy save: they switch off trophies and saving for that session. Use a throwaway save if you want to try them.",
+      "Read the Missables & saves tab once, before Chapter 1 ends — the one missable trophy lives there, and the fix for missing it is a new playthrough.",
+    ],
+  },
   {
     title: "Stage 1 — Play the story, protect the one missable trophy",
     time: "60–80 hours · Chapters 1–4 and the final mission",
     intro:
       "Finish the campaign as Jason and Lucia. Twelve hidden story trophies pop as you play — the four chapter trophies, the six named-mission trophies (Breakfast Run, The Cartel Heist, Child's Play, Headliners, VCIA Takedown, Operation Savage Glory) and the final mission, which is the gold You Gotta Know When to Get Off. No mission medals are needed, so play at your own pace.",
+    covers: "Covers 13 trophies: 4 chapter trophies, 6 named-mission trophies, the final mission, plus the missable meditation",
     steps: [
       "Chapter 1: after the mission Down to Earth, find Lucia at Jason's house in the morning. When she mentions meditating, follow her to the balcony and accept — that meditation counts toward Positive Mental Attitude and is gone once Chapter 1 ends.",
       "Keep a manual save at the start of every chapter, plus one untouched save from just before the final mission. There is no mission replay and no New Game Plus, so a save is your only way back.",
@@ -35,6 +55,7 @@ export const ROADMAP_STAGES = [
     time: "Around 100 hours · free roam after the story",
     intro:
       "After the credits, open Progress > Stats > 100% Completion to see the checklist. Work you did earlier already counts. You do not need everything in the game — only the numbers in the checklist — so stop each activity once its row is met.",
+    covers: "Covers 10 trophies: A Long Road plus the grind trophies that share its checklist rows (stunts, challenges, shooting ranges, drone races, cards, WAiNK, vehicles, vaults, meditations)",
     table: {
       headers: ["Checklist row", "Needed for 100%"],
       rows: [
@@ -69,6 +90,7 @@ export const ROADMAP_STAGES = [
     time: "10–20 hours",
     intro:
       "With 100% done, finish the character questlines and the miscellaneous trophies that are not on the checklist. All of these stay available after the credits.",
+    covers: "Covers 19 trophies: 6 side-character finales, 8 Strangers & Freaks strands, the partner and combat trophies, and the money trophies",
     steps: [
       "Complete the final mission for each side character: Andy (Lucia-only), Kenton, Billy, Randy and Tyrone (Jason-only) — each has its own trophy. Bret's hunting questline is Jason-only and ends in Fair Game.",
       "Finish 8 qualifying Strangers & Freaks mission strands across Leonida. Andy's, Billy's and Tyrone's strands do not count toward the 8 because they have their own trophies — check the trophy's progress counter after each strand.",
@@ -86,6 +108,8 @@ export const MISSABLE_NOTES = {
     "The other 17 spots are marked meditation locations across Leonida (purple icons when you are close). You can meditate at a spot with both Jason and Lucia, and each character's meditation counts, so bring your partner every time. The 100% checklist needs 15 of the 18; the trophy needs all 18.",
     "Everything else in the list stays available after the story: the side-story finales, the robberies, the races and the whole 100% checklist. The only other time-sensitive item is Race Against Yago in Chapter 3 — a street race in Yago's strand that shows an hourglass icon. Do it the moment it appears, because its strand counts toward Strangers & Freaks.",
   ],
+  ifYouMissed:
+    "If you already finished Chapter 1 without the balcony meditation, the only way back is a save from Chapter 1 — or a new playthrough. There is no mission replay, no chapter select and no New Game Plus, so do not overwrite your Chapter 1 save until Positive Mental Attitude has popped. If you have no Chapter 1 save left, start a fresh save file for the trophy run and keep the five-save plan from the start.",
   savePlan: [
     "Save 1 — start of Chapter 1 (before Down to Earth).",
     "Save 2 — start of Chapter 2.",

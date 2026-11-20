@@ -11,7 +11,7 @@
 // only copies files and writes the dossier — it never reads the clock,
 // the environment beyond the output path, or anything else that varies.
 
-import { cpSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildDossier } from "./vendor/makefun-frontend.ts";
@@ -26,6 +26,13 @@ cpSync(join(repoRoot, "app"), join(outputDir, "app"), { recursive: true });
 mkdirSync(join(outputDir, "screenshots"), { recursive: true });
 if (existsSync(join(repoRoot, "screenshots"))) {
   cpSync(join(repoRoot, "screenshots"), join(outputDir, "screenshots"), { recursive: true });
+}
+
+// The scorer wants exactly 3 or 4 screenshots: refuse early, with a plain
+// message, instead of handing buildDossier a set it will reject anyway.
+const shotFiles = readdirSync(join(repoRoot, "screenshots")).filter((f) => /\.(png|jpe?g|webp)$/i.test(f));
+if (shotFiles.length < 3 || shotFiles.length > 4) {
+  throw new Error(`expected 3 or 4 screenshots, found ${shotFiles.length}`);
 }
 
 // The caps below mirror the scorer's gate: at most 4 screenshots, each at

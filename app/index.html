@@ -20,8 +20,14 @@
     <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="55" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
     <p class="progress-sub" id="progressSub">0% &middot; Platinum: Vice Got a Price!</p>
     <p class="grade-counts" id="gradeCounts"></p>
+    <p class="kind-progress" id="kindProgress"></p>
   </div>
 </header>
+
+<div class="missable-strip" role="note">
+  <span class="missable-strip-text">⚠ 1 trophy is potentially missable: <strong>Positive Mental Attitude</strong> — meditate with Lucia in Chapter 1, before the chapter ends.</span>
+  <button type="button" class="missable-strip-btn" id="missableBannerBtn">See the save plan</button>
+</div>
 
 <nav class="views" aria-label="Sections">
   <button type="button" class="view-tab is-active" data-view="checklist">Checklist</button>
@@ -43,6 +49,14 @@
           <option value="gold">Gold</option>
           <option value="silver">Silver</option>
           <option value="bronze">Bronze</option>
+        </select>
+      </label>
+      <label class="select">Sort
+        <select id="sortSelect">
+          <option value="default">List order</option>
+          <option value="grade">Grade (best first)</option>
+          <option value="name">Name A–Z</option>
+          <option value="kind">Kind</option>
         </select>
       </label>
       <label class="check"><input id="hideEarned" type="checkbox"> Hide earned</label>

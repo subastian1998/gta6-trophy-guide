@@ -37,6 +37,7 @@ const trophies = doc.trophies;
 
 let earned = new Set(loadEarned());
 let kind = params.get("filter") && KIND_LABELS[params.get("filter")] ? params.get("filter") : "all";
+let sort = "default";
 let spoiler = params.get("spoiler") === "on" || localStorage.getItem(SPOILER_KEY) === "1";
 
 function loadEarned() {
@@ -79,6 +80,13 @@ function renderProgress() {
   document.getElementById("gradeCounts").textContent = ["platinum", "gold", "silver", "bronze"]
     .map((g) => `${earnedCountOf(g)}/${gradeCount(g)} ${GRADE_LABELS[g].toLowerCase()}`)
     .join(" · ");
+  document.getElementById("kindProgress").textContent = Object.keys(KIND_LABELS)
+    .map((k) => {
+      const total = trophies.filter((t) => t.kind === k).length;
+      const got = trophies.filter((t) => t.kind === k && earned.has(t.name)).length;
+      return `${KIND_LABELS[k]} ${got}/${total}`;
+    })
+    .join(" · ");
 }
 
 function earnedCountOf(g) {
@@ -90,7 +98,9 @@ function renderKindFilters() {
   box.replaceChildren();
   const kinds = ["all", ...Object.keys(KIND_LABELS)];
   for (const k of kinds) {
-    const count = k === "all" ? trophies.length : trophies.filter((t) => t.kind === k).length;
+    const inKind = k === "all" ? trophies : trophies.filter((t) => t.kind === k);
+    const count = inKind.length;
+    const got = inKind.filter((t) => earned.has(t.name)).length;
     const b = document.createElement("button");
     b.type = "button";
     b.className = "kind-chip" + (kind === k ? " is-active" : "");
@@ -98,7 +108,7 @@ function renderKindFilters() {
     b.textContent = (k === "all" ? "All" : KIND_LABELS[k]) + " ";
     const n = document.createElement("span");
     n.className = "n";
-    n.textContent = `(${count})`;
+    n.textContent = `(${got}/${count})`;
     b.append(n);
     b.addEventListener("click", () => {
       kind = k;
@@ -114,12 +124,21 @@ function matchesFilters(t) {
   if (gradeEl.value !== "all" && t.grade !== gradeEl.value) return false;
   if (hideEarnedEl.checked && earned.has(t.name)) return false;
   const q = searchEl.value.trim().toLowerCase();
-  if (q && !(t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || (t.guide ?? "").toLowerCase().includes(q))) return false;
+  if (q && !(t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || (t.guide ?? "").toLowerCase().includes(q) || (t.target ?? "").toLowerCase().includes(q) || (KIND_LABELS[t.kind] ?? "").toLowerCase().includes(q))) return false;
   return true;
 }
 
+const GRADE_ORDER = { platinum: 0, gold: 1, silver: 2, bronze: 3 };
+
+function sortShown(shown) {
+  if (sort === "grade") return [...shown].sort((a, b) => GRADE_ORDER[a.grade] - GRADE_ORDER[b.grade] || a.id - b.id);
+  if (sort === "name") return [...shown].sort((a, b) => a.name.localeCompare(b.name));
+  if (sort === "kind") return [...shown].sort((a, b) => (KIND_LABELS[a.kind] ?? "").localeCompare(KIND_LABELS[b.kind] ?? "") || a.id - b.id);
+  return shown;
+}
+
 function renderList() {
-  const shown = trophies.filter(matchesFilters);
+  const shown = sortShown(trophies.filter(matchesFilters));
   listEl.replaceChildren();
   emptyEl.hidden = shown.length > 0;
   spoilerNoteEl.hidden = !spoiler;
@@ -132,6 +151,7 @@ function renderList() {
   for (const t of shown) {
     listEl.append(buildCard(t));
   }
+  renderKindFilters();
   renderProgress();
 }
 
@@ -139,7 +159,13 @@ function buildCard(t) {
   const card = document.createElement("article");
   const isEarned = earned.has(t.name);
   const spoiled = isSpoiled(t);
-  card.className = "card" + (isEarned ? " is-earned" : "") + (spoiled ? " is-spoiled" : "");
+  card.className = "card" + (isEarned ? " is-earned" : "") + (spoiled ? " is-spoiled" : "") + (t.missable ? " is-missable" : "");
+  if (t.missable && !spoiled) {
+    const banner = document.createElement("p");
+    banner.className = "missable-banner";
+    banner.textContent = "⚠ POTENTIALLY MISSABLE — do the Chapter 1 meditation before the chapter ends. See Missables & saves.";
+    card.append(banner);
+  }
   const top = document.createElement("div");
   top.className = "card-top";
   const badge = document.createElement("span");
@@ -194,6 +220,12 @@ function buildCard(t) {
     preview.className = "guide-preview";
     preview.textContent = t.guide;
     card.append(preview);
+    if (t.sources?.length) {
+      const src = document.createElement("p");
+      src.className = "source-line";
+      src.textContent = "Sources: " + t.sources.map((x) => x.label.split(" — ")[0]).join(" · ");
+      card.append(src);
+    }
   }
 
   const actions = document.createElement("div");
@@ -329,7 +361,7 @@ function renderRoadmap() {
   }
   intro.append(grid);
   root.append(intro);
-  for (const stage of ROADMAP_STAGES) {
+  ROADMAP_STAGES.forEach((stage, i) => {
     const s = document.createElement("div");
     s.className = "stage";
     const sh = document.createElement("h2");
@@ -340,6 +372,12 @@ function renderRoadmap() {
     const si = document.createElement("p");
     si.textContent = stage.intro;
     s.append(sh, st, si);
+    if (stage.covers) {
+      const covers = document.createElement("p");
+      covers.className = "stage-covers";
+      covers.textContent = "Trophies in this stage: " + stage.covers;
+      s.append(covers);
+    }
     if (stage.table) {
       const table = document.createElement("table");
       const thead = document.createElement("thead");
@@ -371,7 +409,7 @@ function renderRoadmap() {
     }
     s.append(ol);
     root.append(s);
-  }
+  });
   const src = document.createElement("p");
   src.className = "toolbar-note";
   src.textContent = "Roadmap sources: KeenGamer's GTA 6 trophy guide & platinum roadmap and Output Lag's GTA 6 trophy list (links in the footer). Counts are the game's 100% completion checklist as those guides report it.";
@@ -401,6 +439,16 @@ function renderMissables() {
     p.textContent = para;
     s.append(p);
   }
+  if (MISSABLE_NOTES.ifYouMissed) {
+    const missedH = document.createElement("h3");
+    missedH.textContent = "What if you already missed it?";
+    const missed = document.createElement("div");
+    missed.className = "callout";
+    const mp = document.createElement("p");
+    mp.textContent = MISSABLE_NOTES.ifYouMissed;
+    missed.append(mp);
+    s.append(missedH, missed);
+  }
   const saveH = document.createElement("h3");
   saveH.textContent = "Save plan — five saves to keep";
   const ol = document.createElement("ol");
@@ -427,9 +475,17 @@ for (const tab of document.querySelectorAll(".view-tab")) {
     document.querySelectorAll(".view").forEach((v) => v.classList.toggle("is-active", v.id === `view-${tab.dataset.view}`));
   });
 }
+document.getElementById("missableBannerBtn").addEventListener("click", () => {
+  document.querySelector('.view-tab[data-view="missables"]').click();
+  document.getElementById("view-missables").scrollIntoView();
+});
 
 // Controls
 searchEl.addEventListener("input", renderList);
+document.getElementById("sortSelect").addEventListener("change", (e) => {
+  sort = e.target.value;
+  renderList();
+});
 gradeEl.addEventListener("change", renderList);
 hideEarnedEl.addEventListener("change", renderList);
 spoilerEl.addEventListener("change", () => {
