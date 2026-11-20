@@ -108,6 +108,12 @@ export function timelineSummary(entries, sessions) {
   };
 }
 
+// How many of the timeline's entries are dated (earned inside a
+// finished session) — the complement of the "date unknown" bucket.
+export function timelineDatedCount(entries) {
+  return (entries ?? []).filter((e) => e.dateISO !== null).length;
+}
+
 // Render the timeline into root. getEarned returns the live Set of
 // earned trophy names; onOpenGuide opens a trophy's guide panel.
 export function renderTimeline(root, { trophies, getEarned, onOpenGuide }) {

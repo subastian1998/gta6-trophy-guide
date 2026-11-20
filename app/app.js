@@ -16,6 +16,17 @@ import { renderTimeline } from "./timeline.js";
 import { renderQuiz } from "./quiz.js";
 import { renderPrintPanel } from "./print.js";
 import { applySettings, loadSettings, renderSettingsPanel } from "./settings.js";
+// Round 4 features: themed collections, SVG progress charts,
+// advanced multi-word search, a monthly planner, play streaks from
+// the session log, a full backup export/import, and a two-trophy
+// comparison. Each module re-reads the live earned set, like round 3.
+import { renderCollections } from "./collections.js";
+import { renderCharts } from "./charts.js";
+import { renderSearch } from "./search.js";
+import { renderMonthlyPlanner } from "./planner-month.js";
+import { renderStreaks } from "./streaks.js";
+import { renderBackup } from "./backup.js";
+import { renderCompare } from "./compare.js";
 
 const STORAGE_KEY = "gta6-trophy-guide-v1";
 const SPOILER_KEY = "gta6-trophy-guide-spoiler";
@@ -230,6 +241,14 @@ function buildCard(t) {
     const tag = document.createElement("span");
     tag.className = "tag notes-badge";
     tag.textContent = notesBadgeText(t.id);
+    meta.append(tag);
+  }
+  // Round 4: the trophy's point value (platinum 10, gold 5, silver 3,
+  // bronze 1 — derived from the grade in trophies.json).
+  if (typeof t.points === "number") {
+    const tag = document.createElement("span");
+    tag.className = "tag points-tag";
+    tag.textContent = `${t.points} pt${t.points === 1 ? "" : "s"}`;
     meta.append(tag);
   }
   card.append(meta);
@@ -852,6 +871,54 @@ const round3Tabs = {
 for (const tab of document.querySelectorAll(".view-tab")) {
   tab.addEventListener("click", () => {
     const view = round3Tabs[tab.dataset.view];
+    if (view) view.render();
+  });
+}
+// Round 4 wiring: mount the seven new tabs the same way. The
+// backup tab's restore callback replaces the earned set in place
+// (the backup module already validated the file) and re-renders.
+const round4Tabs = {
+  collections: renderCollections(document.getElementById("collectionsView"), {
+    trophies,
+    getEarned: () => earned,
+    onOpenGuide: (t) => openDetail(t),
+  }),
+  charts: renderCharts(document.getElementById("chartsView"), {
+    trophies,
+    getEarned: () => earned,
+  }),
+  search: renderSearch(document.getElementById("searchView"), {
+    trophies,
+    getEarned: () => earned,
+    onOpenGuide: (t) => openDetail(t),
+  }),
+  "planner-month": renderMonthlyPlanner(document.getElementById("plannerMonthView"), {
+    trophies,
+    getEarned: () => earned,
+    onOpenGuide: (t) => openDetail(t),
+  }),
+  streaks: renderStreaks(document.getElementById("streaksView"), {
+    getEarned: () => earned,
+  }),
+  backup: renderBackup(document.getElementById("backupView"), {
+    trophies,
+    onRestore: (restoredEarned) => {
+      if (restoredEarned) {
+        earned = restoredEarned;
+        saveEarned();
+      }
+      renderList();
+    },
+  }),
+  compare: renderCompare(document.getElementById("compareView"), {
+    trophies,
+    getEarned: () => earned,
+    onOpenGuide: (t) => openDetail(t),
+  }),
+};
+for (const tab of document.querySelectorAll(".view-tab")) {
+  tab.addEventListener("click", () => {
+    const view = round4Tabs[tab.dataset.view];
     if (view) view.render();
   });
 }

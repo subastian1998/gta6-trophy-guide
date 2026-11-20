@@ -46,6 +46,17 @@ for (const f of round3Files) {
   }
 }
 
+// Round 4: same guard for the seven new tabs (collections, charts,
+// advanced search, monthly planner, streaks, backup, compare) plus
+// their stylesheet — the nav buttons link them, so a missing file
+// would ship a tab that renders nothing.
+const round4Files = ["collections.js", "charts.js", "search.js", "planner-month.js", "streaks.js", "backup.js", "compare.js", "round4.css"];
+for (const f of round4Files) {
+  if (!existsSync(join(repoRoot, "app", f))) {
+    throw new Error(`missing round 4 feature file: app/${f}`);
+  }
+}
+
 // The caps below mirror the scorer's gate: at most 4 screenshots, each at
 // most 256 KiB; app/ at most 993 files and directories and 48 MiB; the
 // dossier text at most 160 KiB. buildDossier refuses an entry past them,

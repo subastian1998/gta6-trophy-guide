@@ -98,6 +98,18 @@ export function nextSuggested(trophies, earnedNames) {
   return ordered.length > 0 ? ordered[0] : null;
 }
 
+// Unearned trophies left per kind, for the charts tab's "what is
+// left" line. Kinds with nothing left are omitted.
+export function remainingByKind(trophies, earnedNames) {
+  const earnedSet = earnedNames instanceof Set ? earnedNames : new Set(earnedNames);
+  const out = {};
+  for (const t of trophies) {
+    if (earnedSet.has(t.name)) continue;
+    out[t.kind] = (out[t.kind] ?? 0) + 1;
+  }
+  return out;
+}
+
 // Split the ordered trophies across dayCount days, keeping the order and
 // keeping each day at or under MAX_TROPHIES_PER_DAY where the days allow.
 // When the days are too few, the overflow spills onto the last day.

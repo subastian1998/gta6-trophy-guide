@@ -133,3 +133,9 @@ export function summariseWeeks(plan, earned) {
     };
   });
 }
+
+// How many days in the plan carry no trophies — the rest days, for
+// the monthly planner's summary line.
+export function restDayCount(plan) {
+  return (plan.days ?? []).filter((d) => d.load === 0).length;
+}

@@ -91,6 +91,17 @@ export function settingsSummary(settings) {
   );
 }
 
+// True when the stored settings are exactly the defaults — used by
+// the backup tab to say "defaults" instead of "saved".
+export function settingIsDefault(settings) {
+  if (!settings) return true;
+  return (
+    settings.theme === DEFAULT_SETTINGS.theme &&
+    settings.fontSize === DEFAULT_SETTINGS.fontSize &&
+    settings.compact === DEFAULT_SETTINGS.compact
+  );
+}
+
 // Render the panel into root. onChange, when given, is called with the
 // new settings after every change, so the app can re-render anything
 // that depends on them (nothing currently does — settings apply

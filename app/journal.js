@@ -115,6 +115,13 @@ export function countNotes(trophies) {
   return trophies.filter((t) => notes[t.id] && notes[t.id].text.trim()).length;
 }
 
+// Total words across all stored notes — a one-number answer to "how
+// much have I written about this hunt so far".
+export function notesTotalWords(trophies) {
+  const notes = loadNotes();
+  return trophies.reduce((n, t) => n + noteWordCount(notes[t.id]?.text ?? ""), 0);
+}
+
 // The trophies that have notes, in list order, each with its note.
 export function trophiesWithNotes(trophies) {
   const notes = loadNotes();

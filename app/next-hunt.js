@@ -91,6 +91,14 @@ export function suggestNext(trophies, earned, dismissed, offset = 0, count = HUN
   return out;
 }
 
+// One line for the hunt header: how many trophies are still hunted
+// and which one heads the queue.
+export function huntRemainingText(trophies, earned, dismissed) {
+  const ordered = orderForHunt(trophies, earned, dismissed);
+  if (ordered.length === 0) return "Nothing left to hunt — every trophy is earned or dismissed.";
+  return `${ordered.length} trophies left to hunt — next up is ${ordered[0].name}.`;
+}
+
 // Render the panel into root. getEarned returns the live Set of earned
 // trophy names; onOpenGuide opens a trophy's guide panel. Refresh deals
 // the next five; Dismiss drops one suggestion from the rotation.

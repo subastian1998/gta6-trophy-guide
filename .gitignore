@@ -5,3 +5,6 @@ node_modules/
 
 # Round 3 scratch screenshots (temporary renders, never committed).
 screenshots/tmp/
+
+# Round 4 screenshot scratch renders (temporary, never committed).
+screenshots/work/

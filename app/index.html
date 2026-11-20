@@ -7,6 +7,7 @@
 <meta name="description" content="An offline guide and checklist for the 55 PlayStation 5 trophies of Grand Theft Auto VI: every official name, description and grade, a cited guide for each trophy, a roadmap to the platinum, missable flags, and saved progress.">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="round4.css">
 </head>
 <body>
 <header class="masthead">
@@ -40,6 +41,13 @@
   <button type="button" class="view-tab" data-view="quiz">Quiz</button>
   <button type="button" class="view-tab" data-view="print">Print</button>
   <button type="button" class="view-tab" data-view="settings">Settings</button>
+  <button type="button" class="view-tab" data-view="collections">Collections <span class="tab-new">New</span></button>
+  <button type="button" class="view-tab" data-view="charts">Charts <span class="tab-new">New</span></button>
+  <button type="button" class="view-tab" data-view="search">Advanced search <span class="tab-new">New</span></button>
+  <button type="button" class="view-tab" data-view="planner-month">Monthly planner <span class="tab-new">New</span></button>
+  <button type="button" class="view-tab" data-view="streaks">Streaks <span class="tab-new">New</span></button>
+  <button type="button" class="view-tab" data-view="backup">Backup <span class="tab-new">New</span></button>
+  <button type="button" class="view-tab" data-view="compare">Compare <span class="tab-new">New</span></button>
 </nav>
 
 <main>
@@ -142,6 +150,34 @@
 
   <section id="view-settings" class="view" aria-label="Settings">
     <div class="stage"><h2>Settings</h2><div id="settingsView"></div></div>
+  </section>
+
+  <section id="view-collections" class="view" aria-label="Trophy collections">
+    <div class="stage"><h2>Collections — themed sets</h2><div id="collectionsView"></div></div>
+  </section>
+
+  <section id="view-charts" class="view" aria-label="Progress charts">
+    <div class="stage"><h2>Charts — your progress drawn</h2><div id="chartsView"></div></div>
+  </section>
+
+  <section id="view-search" class="view" aria-label="Advanced search">
+    <div class="stage"><h2>Advanced search</h2><div id="searchView"></div></div>
+  </section>
+
+  <section id="view-planner-month" class="view" aria-label="Monthly planner">
+    <div class="stage"><h2>Monthly planner — the month at a glance</h2><div id="plannerMonthView"></div></div>
+  </section>
+
+  <section id="view-streaks" class="view" aria-label="Play streaks">
+    <div class="stage"><h2>Streaks — how often you play</h2><div id="streaksView"></div></div>
+  </section>
+
+  <section id="view-backup" class="view" aria-label="Backup and restore">
+    <div class="stage"><h2>Backup &amp; restore</h2><div id="backupView"></div></div>
+  </section>
+
+  <section id="view-compare" class="view" aria-label="Compare trophies">
+    <div class="stage"><h2>Compare two trophies</h2><div id="compareView"></div></div>
   </section>
 </main>
 

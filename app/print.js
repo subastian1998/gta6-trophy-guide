@@ -56,6 +56,14 @@ export function buildChecklistText(trophies, earned) {
   return lines.join("\n") + "\n";
 }
 
+// The printable text's header line on its own, for callers that want
+// the one-line progress summary without the full 55-line list.
+export function printProgressLine(trophies, earned) {
+  const earnedSet = earned instanceof Set ? earned : new Set(earned);
+  const got = trophies.filter((t) => earnedSet.has(t.name)).length;
+  return `${got} of ${trophies.length} earned (${Math.round((got / trophies.length) * 100)}% — ${trophies.length - got} to go)`;
+}
+
 // Download a text blob as a file.
 export function downloadTextFile(filename, text) {
   const a = document.createElement("a");

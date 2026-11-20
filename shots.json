@@ -9,27 +9,27 @@
     }
   },
   {
-    "file": "2-quiz.png",
-    "how": "headless Chromium screenshot of the app served locally; Quiz tab with demo progress (?demo=1), a description-to-name question from the official trophy list",
-    "path": "/?demo=1&view=quiz",
+    "file": "2-collections.png",
+    "how": "headless Chromium screenshot of the app served locally; Collections tab with demo progress (?demo=1), the eleven themed trophy sets with their progress bars",
+    "path": "/?demo=1&view=collections",
     "viewport": {
       "height": 800,
       "width": 1280
     }
   },
   {
-    "file": "3-timeline.png",
-    "how": "headless Chromium screenshot of the app served locally; Timeline tab with demo progress (?demo=1) and two demo sessions dating the earned trophies by day",
-    "path": "/?demo=1&view=timeline",
+    "file": "3-charts.png",
+    "how": "headless Chromium screenshot of the app served locally; Charts tab with demo progress (?demo=1), the grade donut, kind bars and points ladder drawn from the same earned set",
+    "path": "/?demo=1&view=charts",
     "viewport": {
       "height": 800,
       "width": 1280
     }
   },
   {
-    "file": "4-nexthunt.png",
-    "how": "headless Chromium screenshot of the app served locally; Next hunt tab with demo progress (?demo=1), the missable trophy suggested first with its official description as the reason",
-    "path": "/?demo=1&view=nexthunt",
+    "file": "4-streaks.png",
+    "how": "headless Chromium screenshot of the app served locally; Streaks tab with demo progress (?demo=1) and two demo sessions, showing the current/best streaks and the 8-week activity grid",
+    "path": "/?demo=1&view=streaks",
     "viewport": {
       "height": 800,
       "width": 1280

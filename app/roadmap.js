@@ -26,6 +26,12 @@ export function totalRoadmapTrophies() {
   return total;
 }
 
+// Total number of steps across all roadmap stages — the size of the
+// whole route in one number.
+export function totalRoadmapSteps() {
+  return ROADMAP_STAGES.reduce((n, s) => n + (s.steps?.length ?? 0), 0);
+}
+
 export const PLATINUM_FACTS = [
   { num: "55", label: "trophies — 1 platinum, 2 gold, 6 silver, 46 bronze" },
   { num: "~200 h", label: "estimated time to the platinum" },

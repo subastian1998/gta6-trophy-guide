@@ -28,6 +28,18 @@ Five hidden trophies have no confirmed unlock method at launch (In The Beginning
 - **Print** — all 55 trophies as a plain-text checklist (`[x]`/`[ ]`, grade, kind, missable flag) with Copy to clipboard, Download `.txt`, and a print stylesheet that prints only the list.
 - **Settings** — theme (auto/dark/light), text size (small/medium/large) and compact cards, saved in this browser and applied on load.
 
+## Round 4 — new in this round
+
+- **Collections** — the 55 trophies grouped into 11 themed sets (story arc, gold & platinum, hidden, unconfirmed, the missable one, and one set per kind). Each set shows earned/total, a progress bar and its point value; clicking a name opens its guide.
+- **Charts** — the same progress drawn three ways as plain inline SVG: a donut by grade, a bar per kind, and a points ladder (platinum 10, gold 5, silver 3, bronze 1 — 84 points in total across the list).
+- **Advanced search** — multi-word AND search across names, descriptions, guides, targets and keywords, with grade/kind checkboxes, hidden/missable/unconfirmed/unearned filters, a minimum-points floor and match highlighting.
+- **Monthly planner** — the unearned trophies spread across a calendar month (missable on day 1, story in order, the 100% trophy last); click a day to see its trophies. Weekends marked, past days greyed out.
+- **Streaks** — current and best streaks of active days from the session log, an 8-week activity grid, and trophies earned inside sessions. A day counts only when a finished session ended on it.
+- **Backup** — one JSON file holding earned trophies, notes, settings, sessions, spoiler mode and dismissed hunts, with download, copy-to-clipboard and validated import (unknown names dropped and reported, bad sections skipped, nothing written until validation passes).
+- **Compare** — any two trophies side by side: grade, points, kind, description, target, hidden/missable/confirmed flags, guide length, tips and sources, with a verdict on the bigger prize and the quicker win.
+- **Points** — every trophy now carries a derived `points` field in `trophies.json` (platinum 10, gold 5, silver 3, bronze 1), shown as a tag on each checklist card.
+- **Keyboard shortcuts** — the seven new tabs have letter keys: `c` collections, `h` charts, `a` advanced search, `m` monthly planner, `s` streaks, `b` backup, `o` compare.
+
 ## Run it
 
 ```sh

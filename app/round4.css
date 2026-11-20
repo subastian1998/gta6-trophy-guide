@@ -1,0 +1,172 @@
+/* Round 4 styles — collections, charts, advanced search, monthly
+   planner, streaks, backup and compare. Class names are prefixed
+   col-, chart-, adv-, cal-, streak-, backup- or cmp- (plus the
+   shared r4- intro/summary lines) so they cannot collide with the
+   round 1–3 styles in style.css. Colours reuse the existing
+   palette: dark ink on paper, green for earned, amber for warnings. */
+
+.r4-intro { max-width: 70ch; margin: 0 0 1rem; line-height: 1.55; }
+.r4-summary { max-width: 70ch; margin: 0 0 1.25rem; line-height: 1.55; font-weight: 600; }
+
+/* --- Collections --- */
+.col-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+.col-card { border: 1px solid #d8d2c4; border-radius: 10px; padding: 1rem 1.1rem; background: #fffdf7; }
+.col-card.is-complete { border-color: #2e7d32; background: #f0f7ef; }
+.col-head { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+.col-title { margin: 0; font-size: 1.15rem; }
+.col-count { font-weight: 700; white-space: nowrap; }
+.col-blurb { margin: .4rem 0 .7rem; line-height: 1.5; color: #444; }
+.col-track { height: 8px; border-radius: 4px; background: #e8e2d2; overflow: hidden; }
+.col-fill { height: 100%; background: #2e7d32; border-radius: 4px; }
+.col-meta { margin: .45rem 0 .7rem; font-size: .9rem; color: #555; }
+.col-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.col-item { display: flex; align-items: center; gap: .5rem; }
+.col-item.is-earned .col-name { text-decoration: line-through; color: #555; }
+.col-grade { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: .1rem .4rem; border-radius: 4px; background: #efe9d8; white-space: nowrap; }
+.col-name { background: none; border: 0; padding: 0; font: inherit; color: #1a4d8f; cursor: pointer; text-align: left; }
+.col-name:hover { text-decoration: underline; }
+.col-check { color: #2e7d32; font-weight: 700; }
+.col-flag { font-size: .75rem; font-weight: 700; color: #8a5a00; }
+
+/* --- Charts --- */
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; }
+.chart-figure { margin: 0; border: 1px solid #d8d2c4; border-radius: 10px; padding: 1rem 1.1rem; background: #fffdf7; }
+.chart-caption { font-weight: 700; margin-bottom: .8rem; line-height: 1.45; }
+.chart-donut { display: block; margin: 0 auto; }
+.donut-track { stroke: #e8e2d2; stroke-width: 18; }
+.donut-arc { stroke-width: 18; stroke-linecap: butt; }
+.donut-center { font-size: 1.35rem; font-weight: 800; fill: #222; }
+.donut-sub { font-size: .85rem; fill: #666; }
+.chart-legend { list-style: none; margin: .8rem 0 0; padding: 0; display: grid; gap: .3rem; }
+.legend-item { display: flex; align-items: center; gap: .5rem; }
+.legend-swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.chart-bars { display: grid; gap: .55rem; }
+.chart-bar-row { display: grid; grid-template-columns: 130px 1fr 64px; gap: .6rem; align-items: center; }
+.chart-bar-name { font-size: .92rem; }
+.chart-bar-track { height: 12px; border-radius: 6px; background: #e8e2d2; overflow: hidden; }
+.chart-bar-fill { height: 100%; background: #1a4d8f; border-radius: 6px; }
+.chart-bar-fill.points-fill { background: #2e7d32; }
+.chart-bar-count { font-size: .88rem; text-align: right; white-space: nowrap; }
+.chart-note { margin: .9rem 0 0; font-size: .92rem; line-height: 1.5; color: #555; }
+
+/* --- Advanced search --- */
+.adv-panel { display: grid; gap: 1rem; }
+.adv-query-row { display: flex; gap: .6rem; }
+.adv-query { flex: 1; padding: .6rem .7rem; font: inherit; border: 1px solid #b9b2a0; border-radius: 6px; }
+.adv-clear { padding: .6rem .9rem; font: inherit; cursor: pointer; }
+.adv-filters { display: grid; gap: .6rem; border: 1px solid #d8d2c4; border-radius: 8px; padding: .8rem 1rem; background: #fffdf7; }
+.adv-group { display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center; }
+.adv-group-label { font-weight: 700; margin-right: .2rem; }
+.adv-check { display: inline-flex; gap: .35rem; align-items: center; cursor: pointer; }
+.adv-sort-row { display: flex; flex-wrap: wrap; gap: 1rem; }
+.adv-sort-label { display: inline-flex; gap: .4rem; align-items: center; }
+.adv-sort { padding: .35rem .5rem; font: inherit; }
+.adv-count { margin: 0; font-weight: 600; }
+.adv-results { display: grid; gap: .8rem; }
+.adv-item { border: 1px solid #d8d2c4; border-radius: 8px; padding: .8rem 1rem; background: #fffdf7; }
+.adv-item.is-earned { border-color: #2e7d32; }
+.adv-item-top { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+.adv-grade { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: .1rem .4rem; border-radius: 4px; background: #efe9d8; }
+.adv-name { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; font-size: 1.05rem; color: #1a4d8f; cursor: pointer; text-align: left; }
+.adv-name:hover { text-decoration: underline; }
+.adv-earned { color: #2e7d32; font-weight: 700; }
+.adv-desc { margin: .45rem 0; line-height: 1.5; }
+.adv-desc mark { background: #ffe08a; padding: 0 .1em; border-radius: 2px; }
+.adv-meta { margin: 0; font-size: .9rem; color: #555; }
+.adv-matched { margin: .3rem 0 0; font-size: .85rem; color: #666; }
+.adv-empty { margin: 0; color: #555; }
+
+/* --- Monthly planner --- */
+.cal-shell { display: grid; gap: 1rem; }
+.cal-nav { display: flex; gap: .8rem; align-items: center; }
+.cal-title { margin: 0; flex: 1; text-align: center; font-size: 1.3rem; }
+.cal-nav-btn { padding: .5rem .8rem; font: inherit; cursor: pointer; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: .4rem; }
+.cal-head { font-weight: 700; text-align: center; padding: .3rem 0; }
+.cal-blank { min-height: 64px; }
+.cal-day { display: grid; gap: .1rem; align-content: start; text-align: left; min-height: 76px; padding: .45rem .55rem; font: inherit; border: 1px solid #d8d2c4; border-radius: 8px; background: #fffdf7; cursor: pointer; }
+.cal-day:hover { border-color: #1a4d8f; }
+.cal-day.is-weekend { background: #f6f1e4; }
+.cal-day.is-past { opacity: .55; }
+.cal-day.is-rest { background: #fbfaf6; }
+.cal-num { font-weight: 800; }
+.cal-count { font-size: .82rem; font-weight: 700; color: #1a4d8f; }
+.cal-first { font-size: .8rem; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.cal-rest { font-size: .8rem; color: #888; }
+.cal-warn { font-size: .78rem; font-weight: 700; color: #8a5a00; }
+.cal-detail { border: 1px solid #d8d2c4; border-radius: 10px; padding: 1rem 1.1rem; background: #fffdf7; }
+.cal-detail-hint { margin: 0; color: #555; }
+.cal-detail-title { margin: 0 0 .7rem; }
+.cal-detail-note { margin: 0; line-height: 1.5; }
+.cal-detail-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.cal-detail-item { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+.cal-grade { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: .1rem .4rem; border-radius: 4px; background: #efe9d8; }
+.cal-name { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; color: #1a4d8f; cursor: pointer; text-align: left; }
+.cal-name:hover { text-decoration: underline; }
+.cal-kind { font-size: .88rem; color: #555; }
+
+/* --- Streaks --- */
+.streak-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+.streak-stat { border: 1px solid #d8d2c4; border-radius: 10px; padding: 1rem; background: #fffdf7; text-align: center; }
+.streak-stat-num { font-size: 2rem; font-weight: 800; line-height: 1.1; }
+.streak-stat-label { font-weight: 700; margin-top: .2rem; }
+.streak-stat-sub { font-size: .85rem; color: #555; margin-top: .3rem; line-height: 1.4; }
+.streak-grid-wrap { border: 1px solid #d8d2c4; border-radius: 10px; padding: 1rem 1.1rem; background: #fffdf7; margin-bottom: 1rem; }
+.streak-grid-title { margin: 0 0 .8rem; }
+.streak-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: .35rem; }
+.streak-head { font-weight: 700; font-size: .85rem; text-align: center; }
+.streak-cell { aspect-ratio: 1.6; display: grid; place-items: center; border: 1px solid #d8d2c4; border-radius: 5px; font-size: .8rem; color: #666; background: #fff; }
+.streak-cell.is-active { background: #2e7d32; border-color: #2e7d32; color: #fff; font-weight: 700; }
+.streak-cell.is-today { border: 2px solid #1a4d8f; }
+.streak-cell.is-future { background: #f0ede4; color: #aaa; }
+.streak-grid-legend { margin: .8rem 0 0; font-size: .88rem; color: #555; }
+
+/* --- Backup --- */
+.backup-summary { border: 1px solid #d8d2c4; border-radius: 10px; padding: 1rem 1.1rem; background: #fffdf7; margin-bottom: 1rem; }
+.backup-summary-title { margin: 0 0 .6rem; }
+.backup-counts { margin: 0; padding-left: 1.2rem; line-height: 1.7; }
+.backup-meta { margin: .6rem 0 0; font-size: .9rem; color: #555; }
+.backup-actions { display: flex; flex-wrap: wrap; gap: .7rem; align-items: center; margin-bottom: 1rem; }
+.backup-btn { padding: .6rem .9rem; font: inherit; cursor: pointer; }
+.backup-import-label { display: inline-flex; gap: .5rem; align-items: center; font: inherit; }
+.backup-import { font: inherit; }
+.backup-status { margin: 0 0 1rem; font-weight: 600; line-height: 1.5; }
+.backup-note { margin: 0; max-width: 70ch; line-height: 1.55; color: #555; }
+
+/* --- Compare --- */
+.cmp-shell { display: grid; gap: 1rem; }
+.cmp-pickers { display: flex; flex-wrap: wrap; gap: .7rem; align-items: end; }
+.cmp-picker-label { display: grid; gap: .3rem; font-weight: 700; }
+.cmp-select { padding: .5rem .6rem; font: inherit; max-width: 320px; }
+.cmp-swap { padding: .5rem .8rem; font: inherit; cursor: pointer; }
+.cmp-table-wrap { overflow-x: auto; }
+.cmp-table { border-collapse: collapse; width: 100%; }
+.cmp-table th, .cmp-table td { border: 1px solid #d8d2c4; padding: .6rem .8rem; text-align: left; vertical-align: top; line-height: 1.5; }
+.cmp-label { width: 150px; font-weight: 700; background: #f6f1e4; }
+.cmp-head { cursor: pointer; color: #1a4d8f; }
+.cmp-head:hover { text-decoration: underline; }
+.cmp-cell.is-winner { background: #eef6ec; font-weight: 700; }
+.cmp-verdict { margin: 0; font-weight: 600; line-height: 1.55; }
+
+@media (max-width: 640px) {
+  .chart-bar-row { grid-template-columns: 96px 1fr 56px; }
+  .cal-day { min-height: 58px; }
+  .cal-first { display: none; }
+}
+
+/* Round 4 additions: stacked overall bar, recent searches, month
+   kind breakdown, per-month streak summary, ranked set list. */
+.chart-stack { display: block; width: 100%; height: auto; }
+.stack-label { font-size: 11px; fill: #444; }
+.stack-frame { stroke: #b9b2a0; stroke-width: 1; }
+.adv-recent { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 0; }
+.adv-recent-label { font-weight: 700; }
+.adv-recent-chip { padding: .25rem .6rem; font: inherit; font-size: .9rem; border: 1px solid #b9b2a0; border-radius: 999px; background: #fff; cursor: pointer; }
+.adv-recent-chip:hover { border-color: #1a4d8f; color: #1a4d8f; }
+.cal-kind-breakdown { margin: 0; font-size: .92rem; color: #555; line-height: 1.5; }
+.streak-months { border: 1px solid #d8d2c4; border-radius: 10px; padding: 1rem 1.1rem; background: #fffdf7; margin-bottom: 1rem; }
+.streak-months-title { margin: 0 0 .6rem; }
+.streak-months-list { margin: 0; padding-left: 1.2rem; line-height: 1.7; }
+.col-ranked { border: 1px solid #d8d2c4; border-radius: 10px; padding: 1rem 1.1rem; background: #fffdf7; margin-bottom: 1rem; }
+.col-ranked-title { margin: 0 0 .6rem; }
+.col-ranked-list { margin: 0; padding-left: 1.2rem; line-height: 1.7; }

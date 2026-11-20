@@ -708,3 +708,17 @@ body.compact-cards .list { gap: 10px; }
   .print-preview { border: none; max-height: none; overflow: visible; font-size: 12px; color: #000; }
   .stage { border: none; padding: 0; }
 }
+
+/* Round 4: a small "New" marker on the seven new view tabs. */
+.tab-new {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #1a4d8f;
+  background: #dbe9f7;
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+  margin-left: 0.15rem;
+  vertical-align: 0.1em;
+}

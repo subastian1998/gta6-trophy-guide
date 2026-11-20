@@ -31,6 +31,11 @@ export function relatedTrophies(trophy, trophies) {
   return [...sameKind.slice(0, 4), ...sameGrade.slice(0, 4)];
 }
 
+// How many related trophies the modal will show for this trophy.
+export function relatedCount(trophy, trophies) {
+  return relatedTrophies(trophy, trophies).length;
+}
+
 export function openTrophyModal(trophy, trophies, earned, { onToggleEarned, onOpenGuide }) {
   closeTrophyModal();
   const overlay = document.createElement("div");

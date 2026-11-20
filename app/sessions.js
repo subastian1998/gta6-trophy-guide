@@ -43,6 +43,19 @@ export function earnedDuring(session, earnedNow) {
   return after.filter((name) => !before.has(name));
 }
 
+// Total played minutes across finished sessions, from their start
+// and end timestamps. Open sessions are excluded — their length is
+// not final yet — and a session missing either timestamp counts 0.
+export function totalSessionMinutes(sessions) {
+  let total = 0;
+  for (const s of sessions ?? []) {
+    if (!s || !s.done || !s.startedAt || !s.endedAt) continue;
+    const mins = (new Date(s.endedAt) - new Date(s.startedAt)) / 60000;
+    if (Number.isFinite(mins) && mins > 0) total += mins;
+  }
+  return Math.round(total);
+}
+
 // Round 3 (timeline): the first finished session in which each trophy
 // was earned, as a Map of name -> session. A trophy earned in several
 // sessions maps to the earliest one, so the timeline dates it to the

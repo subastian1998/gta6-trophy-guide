@@ -92,6 +92,13 @@ export function quizAccuracy(score) {
   return Math.round((score.correct / score.asked) * 100);
 }
 
+// How many trophies can be quiz answers: every trophy with a
+// description is askable, so the pool is the whole list unless a
+// trophy somehow has no description.
+export function quizPoolSize(trophies) {
+  return trophies.filter((t) => (t.description ?? "").trim().length > 0).length;
+}
+
 // Render the quiz into root. onOpenGuide opens the answer trophy's
 // guide panel from the reveal. Every round starts fresh: score and
 // streak are new each time the tab is opened.

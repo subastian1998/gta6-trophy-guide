@@ -19,12 +19,28 @@ export const SHORTCUT_LIST = [
   { key: "7", label: "Go to Quiz" },
   { key: "8", label: "Go to Print" },
   { key: "9", label: "Go to Settings" },
+  { key: "c", label: "Go to Collections" },
+  { key: "h", label: "Go to Charts" },
+  { key: "a", label: "Go to Advanced search" },
+  { key: "m", label: "Go to Monthly planner" },
+  { key: "s", label: "Go to Streaks" },
+  { key: "b", label: "Go to Backup" },
+  { key: "o", label: "Go to Compare" },
   { key: "e", label: "Mark the open trophy earned / unmark it" },
   { key: "?", label: "Show this list" },
   { key: "Esc", label: "Close a panel or modal" },
 ];
 
 const VIEW_KEYS = { 1: "checklist", 2: "roadmap", 3: "missables", 4: "planner", 5: "nexthunt", 6: "timeline", 7: "quiz", 8: "print", 9: "settings" };
+
+// Round 4: letter keys for the seven new tabs (digits 1–9 are taken).
+const ROUND4_VIEW_KEYS = { c: "collections", h: "charts", a: "search", m: "planner-month", s: "streaks", b: "backup", o: "compare" };
+
+// The view a shortcut key jumps to, or null when the key is not a
+// view shortcut. Consults the digit keys first, then the letters.
+export function viewKeyFor(key) {
+  return VIEW_KEYS[key] ?? ROUND4_VIEW_KEYS[key] ?? null;
+}
 
 function isTyping(target) {
   return (
@@ -106,6 +122,8 @@ export function initShortcuts({ focusSearch, switchView, getOpenTrophy, onToggle
       openShortcutsHelp();
     } else if (e.key >= "1" && e.key <= "9") {
       switchView(VIEW_KEYS[e.key]);
+    } else if (ROUND4_VIEW_KEYS[e.key]) {
+      switchView(ROUND4_VIEW_KEYS[e.key]);
     } else if (e.key === "e" || e.key === "E") {
       const t = getOpenTrophy();
       if (t) {
