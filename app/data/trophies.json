@@ -2,10 +2,14 @@
  "game": "Grand Theft Auto VI",
  "platform": "PlayStation 5",
  "list": "the official 55 trophies, 2026-11-18",
+ "huntProfile": "Round 5 hunt profile, this guide's own estimates: difficulty is 1-5 (1 trivial, 5 hardest grind); estimatedHours is a rough solo-play estimate for that trophy alone; roadmapStage is the platinum roadmap phase: story, side, cleanup, grind or platinum.",
  "note": "Official names, descriptions and grades are as PlayStation publishes them (PSNProfiles / Exophase). Every guide below is written for this guide in its own words and names its sources. Five hidden trophies have no confirmed unlock method at launch and are marked confirmed: false. Round 2: the short story-mission and side-finale guides were expanded with what to do, where and when.",
  "trophies": [
   {
    "id": 1,
+   "difficulty": 3,
+   "estimatedHours": 200,
+   "roadmapStage": "platinum",
    "name": "Vice Got a Price!",
    "description": "Congratulations! You're a Leonida Legend.",
    "grade": "platinum",
@@ -39,6 +43,9 @@
   },
   {
    "id": 2,
+   "difficulty": 1,
+   "estimatedHours": 1,
+   "roadmapStage": "story",
    "name": "Just Like Paradise",
    "description": "Complete Gone Fishing.",
    "grade": "bronze",
@@ -71,6 +78,9 @@
   },
   {
    "id": 3,
+   "difficulty": 1,
+   "estimatedHours": 2,
+   "roadmapStage": "story",
    "name": "Paradise Lost",
    "description": "Complete Chapter 1.",
    "grade": "bronze",
@@ -101,6 +111,9 @@
   },
   {
    "id": 4,
+   "difficulty": 2,
+   "estimatedHours": 3,
+   "roadmapStage": "story",
    "name": "T**s Ass Drug Money",
    "description": "Complete Chapter 2.",
    "grade": "bronze",
@@ -132,6 +145,9 @@
   },
   {
    "id": 5,
+   "difficulty": 1,
+   "estimatedHours": 4,
+   "roadmapStage": "story",
    "name": "Vice City, Baby!",
    "description": "Complete Chapter 3.",
    "grade": "bronze",
@@ -163,6 +179,9 @@
   },
   {
    "id": 6,
+   "difficulty": 2,
+   "estimatedHours": 6,
+   "roadmapStage": "story",
    "name": "Top Of The World, Ma",
    "description": "Complete Chapter 4.",
    "grade": "bronze",
@@ -193,6 +212,9 @@
   },
   {
    "id": 7,
+   "difficulty": 3,
+   "estimatedHours": 8,
+   "roadmapStage": "story",
    "name": "You Gotta Know When to Get Off",
    "description": "Complete the final mission.",
    "grade": "gold",
@@ -227,6 +249,9 @@
   },
   {
    "id": 8,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "story",
    "name": "Trust",
    "description": "Complete Breakfast Run.",
    "grade": "bronze",
@@ -257,6 +282,9 @@
   },
   {
    "id": 9,
+   "difficulty": 2,
+   "estimatedHours": 3,
+   "roadmapStage": "story",
    "name": "Break the Bank",
    "description": "Complete The Cartel Heist.",
    "grade": "bronze",
@@ -288,6 +316,9 @@
   },
   {
    "id": 10,
+   "difficulty": 2,
+   "estimatedHours": 3,
+   "roadmapStage": "story",
    "name": "Family Matters",
    "description": "Complete Child's Play.",
    "grade": "bronze",
@@ -319,6 +350,9 @@
   },
   {
    "id": 11,
+   "difficulty": 2,
+   "estimatedHours": 4,
+   "roadmapStage": "story",
    "name": "DWNFALL",
    "description": "Complete Headliners.",
    "grade": "bronze",
@@ -348,6 +382,9 @@
   },
   {
    "id": 12,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "story",
    "name": "Hi-Jacked",
    "description": "Complete VCIA Takedown.",
    "grade": "bronze",
@@ -378,6 +415,9 @@
   },
   {
    "id": 13,
+   "difficulty": 2,
+   "estimatedHours": 3,
+   "roadmapStage": "story",
    "name": "Snow Storm",
    "description": "Complete Operation Savage Glory.",
    "grade": "bronze",
@@ -410,6 +450,9 @@
   },
   {
    "id": 14,
+   "difficulty": 5,
+   "estimatedHours": 200,
+   "roadmapStage": "cleanup",
    "name": "A Long Road",
    "description": "Attain 100% Completion.",
    "grade": "gold",
@@ -442,6 +485,9 @@
   },
   {
    "id": 15,
+   "difficulty": 4,
+   "estimatedHours": 15,
+   "roadmapStage": "grind",
    "name": "Cunning Stunts",
    "description": "Complete 250 Stunts.",
    "grade": "silver",
@@ -473,6 +519,9 @@
   },
   {
    "id": 16,
+   "difficulty": 2,
+   "estimatedHours": 6,
+   "roadmapStage": "side",
    "name": "Master of None",
    "description": "Try each type of activity once.",
    "grade": "bronze",
@@ -507,6 +556,9 @@
   },
   {
    "id": 17,
+   "difficulty": 4,
+   "estimatedHours": 8,
+   "roadmapStage": "grind",
    "name": "The Shootist",
    "description": "Earn a gold medal in all Shooting Range challenges.",
    "grade": "silver",
@@ -541,6 +593,9 @@
   },
   {
    "id": 18,
+   "difficulty": 3,
+   "estimatedHours": 6,
+   "roadmapStage": "side",
    "name": "Top Fun",
    "description": "Win a Top Fun Drone Race at every location.",
    "grade": "bronze",
@@ -574,6 +629,9 @@
   },
   {
    "id": 19,
+   "difficulty": 3,
+   "estimatedHours": 8,
+   "roadmapStage": "grind",
    "name": "Earn Cash, Not Kudos",
    "description": "Win 20 different races.",
    "grade": "bronze",
@@ -608,6 +666,9 @@
   },
   {
    "id": 20,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "side",
    "name": "Baited My Tackle",
    "description": "Beat Cal in a fishing challenge.",
    "grade": "bronze",
@@ -640,6 +701,9 @@
   },
   {
    "id": 21,
+   "difficulty": 2,
+   "estimatedHours": 1,
+   "roadmapStage": "side",
    "name": "Stick Fiddler",
    "description": "Complete an arcade game.",
    "grade": "bronze",
@@ -671,6 +735,9 @@
   },
   {
    "id": 22,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "story",
    "name": "Road to Rehabilitation",
    "description": "Complete the final mission for Andy.",
    "grade": "bronze",
@@ -703,6 +770,9 @@
   },
   {
    "id": 23,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "story",
    "name": "This Was No Boat Accident",
    "description": "Complete the final mission for Kenton.",
    "grade": "bronze",
@@ -736,6 +806,9 @@
   },
   {
    "id": 24,
+   "difficulty": 2,
+   "estimatedHours": 3,
+   "roadmapStage": "story",
    "name": "The Lone Rider",
    "description": "Complete the final mission for Billy.",
    "grade": "bronze",
@@ -768,6 +841,9 @@
   },
   {
    "id": 25,
+   "difficulty": 3,
+   "estimatedHours": 10,
+   "roadmapStage": "side",
    "name": "Strangers & Freaks",
    "description": "Complete 8 mission strands for strangers across the state of Leonida.",
    "grade": "silver",
@@ -803,6 +879,9 @@
   },
   {
    "id": 26,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "story",
    "name": "Supply & Demand",
    "description": "Complete the final mission for Randy.",
    "grade": "bronze",
@@ -835,6 +914,9 @@
   },
   {
    "id": 27,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "story",
    "name": "Spin On This!",
    "description": "Complete the final mission for Tyrone.",
    "grade": "bronze",
@@ -866,6 +948,9 @@
   },
   {
    "id": 28,
+   "difficulty": 3,
+   "estimatedHours": 4,
+   "roadmapStage": "side",
    "name": "Positive Mental Attitude",
    "description": "Meditate at every spot across Leonida.",
    "grade": "bronze",
@@ -901,6 +986,9 @@
   },
   {
    "id": 29,
+   "difficulty": 2,
+   "estimatedHours": 3,
+   "roadmapStage": "story",
    "name": "Fair Game",
    "description": "Hunt a unique animal for Bret.",
    "grade": "bronze",
@@ -933,6 +1021,9 @@
   },
   {
    "id": 30,
+   "difficulty": 3,
+   "estimatedHours": 6,
+   "roadmapStage": "cleanup",
    "name": "Don't Touch My Deck",
    "description": "Complete 3 Collectible Card sets.",
    "grade": "silver",
@@ -967,6 +1058,9 @@
   },
   {
    "id": 31,
+   "difficulty": 3,
+   "estimatedHours": 5,
+   "roadmapStage": "cleanup",
    "name": "You WAiNKer!",
    "description": "WAiNK It at 100 locations.",
    "grade": "silver",
@@ -998,6 +1092,9 @@
   },
   {
    "id": 32,
+   "difficulty": 3,
+   "estimatedHours": 12,
+   "roadmapStage": "grind",
    "name": "One Last Thing",
    "description": "Complete 50 Challenges.",
    "grade": "bronze",
@@ -1030,6 +1127,9 @@
   },
   {
    "id": 33,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "side",
    "name": "Hot Together",
    "description": "Lose a 4 star Wanted Level with your partner and escape the heat.",
    "grade": "bronze",
@@ -1065,6 +1165,9 @@
   },
   {
    "id": 34,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "side",
    "name": "Retail Therapy",
    "description": "Rob 3 shops back-to-back with your partner without losing your Wanted Level.",
    "grade": "bronze",
@@ -1101,6 +1204,9 @@
   },
   {
    "id": 35,
+   "difficulty": 2,
+   "estimatedHours": 8,
+   "roadmapStage": "cleanup",
    "name": "Whip It Good",
    "description": "Discover 100 vehicles.",
    "grade": "bronze",
@@ -1133,6 +1239,9 @@
   },
   {
    "id": 36,
+   "difficulty": 3,
+   "estimatedHours": 1,
+   "roadmapStage": "side",
    "name": "Gunslinger",
    "description": "Take down 5 enemies in a single use of Combat Focus.",
    "grade": "bronze",
@@ -1168,6 +1277,9 @@
   },
   {
    "id": 37,
+   "difficulty": 3,
+   "estimatedHours": 2,
+   "roadmapStage": "side",
    "name": "Catch Me If You Can",
    "description": "Make an unscheduled departure at VCIA.",
    "grade": "bronze",
@@ -1200,6 +1312,9 @@
   },
   {
    "id": 38,
+   "difficulty": 3,
+   "estimatedHours": 2,
+   "roadmapStage": "side",
    "name": "Challenging Tank",
    "description": "Kinda hot in these Rhinos.",
    "grade": "bronze",
@@ -1232,6 +1347,9 @@
   },
   {
    "id": 39,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "side",
    "name": "Sneakthief",
    "description": "Rob a jewelry store without being detected.",
    "grade": "bronze",
@@ -1265,6 +1383,9 @@
   },
   {
    "id": 40,
+   "difficulty": 3,
+   "estimatedHours": 6,
+   "roadmapStage": "side",
    "name": "Maximum Withdrawal",
    "description": "Rob 5 Bank Vaults and escape.",
    "grade": "silver",
@@ -1298,6 +1419,9 @@
   },
   {
    "id": 41,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "story",
    "name": "A Classic Blitz Play",
    "description": "Rob an Armored Truck and escape.",
    "grade": "bronze",
@@ -1331,6 +1455,9 @@
   },
   {
    "id": 42,
+   "difficulty": 2,
+   "estimatedHours": 4,
+   "roadmapStage": "cleanup",
    "name": "The Goodtime State",
    "description": "Explore all of Leonida.",
    "grade": "bronze",
@@ -1361,6 +1488,9 @@
   },
   {
    "id": 43,
+   "difficulty": 3,
+   "estimatedHours": 10,
+   "roadmapStage": "side",
    "name": "Pest Control",
    "description": "Rob an Illegal Operation belonging to each gang.",
    "grade": "bronze",
@@ -1396,6 +1526,9 @@
   },
   {
    "id": 44,
+   "difficulty": 1,
+   "estimatedHours": 1,
+   "roadmapStage": "side",
    "name": "In The Beginning…",
    "description": "Enjoy a cocktail with a view on Ocean Beach.",
    "grade": "bronze",
@@ -1429,6 +1562,9 @@
   },
   {
    "id": 45,
+   "difficulty": 2,
+   "estimatedHours": 2,
+   "roadmapStage": "side",
    "name": "Capital Offense",
    "description": "Smash your way out of a vehicle showroom in classic style.",
    "grade": "bronze",
@@ -1465,6 +1601,9 @@
   },
   {
    "id": 46,
+   "difficulty": 1,
+   "estimatedHours": 1,
+   "roadmapStage": "side",
    "name": "Let’s Go Bowling",
    "description": "Follow-through at the Kolt & Associates' bowling alley.",
    "grade": "bronze",
@@ -1497,6 +1636,9 @@
   },
   {
    "id": 47,
+   "difficulty": 2,
+   "estimatedHours": 3,
+   "roadmapStage": "side",
    "name": "Personal Best",
    "description": "A partnership with mass appeal.",
    "grade": "bronze",
@@ -1528,6 +1670,9 @@
   },
   {
    "id": 48,
+   "difficulty": 4,
+   "estimatedHours": 20,
+   "roadmapStage": "grind",
    "name": "Actions Speak Louder",
    "description": "Choices made (for better or worse).",
    "grade": "bronze",
@@ -1562,6 +1707,9 @@
   },
   {
    "id": 49,
+   "difficulty": 2,
+   "estimatedHours": 1,
+   "roadmapStage": "side",
    "name": "Bad Luck, I Guess",
    "description": "Second time's the charm.",
    "grade": "bronze",
@@ -1595,6 +1743,9 @@
   },
   {
    "id": 50,
+   "difficulty": 2,
+   "estimatedHours": 3,
+   "roadmapStage": "side",
    "name": "The Truth Is Out There",
    "description": "What the hell just happened?",
    "grade": "bronze",
@@ -1629,6 +1780,9 @@
   },
   {
    "id": 51,
+   "difficulty": 1,
+   "estimatedHours": 1,
+   "roadmapStage": "side",
    "name": "Ten Pin",
    "description": "Bowl 'em over with a melee drive-by.",
    "grade": "bronze",
@@ -1662,6 +1816,9 @@
   },
   {
    "id": 52,
+   "difficulty": 3,
+   "estimatedHours": 10,
+   "roadmapStage": "grind",
    "name": "Dime on the Dollar",
    "description": "Earn $250,000 laundering Marked Bills through your contacts.",
    "grade": "bronze",
@@ -1699,6 +1856,9 @@
   },
   {
    "id": 53,
+   "difficulty": 1,
+   "estimatedHours": 6,
+   "roadmapStage": "grind",
    "name": "Treat Yo Self",
    "description": "Spend $100,000 across all shops.",
    "grade": "bronze",
@@ -1733,6 +1893,9 @@
   },
   {
    "id": 54,
+   "difficulty": 2,
+   "estimatedHours": 4,
+   "roadmapStage": "side",
    "name": "Little Boxes",
    "description": "Purchase all garage properties.",
    "grade": "bronze",
@@ -1765,6 +1928,9 @@
   },
   {
    "id": 55,
+   "difficulty": 1,
+   "estimatedHours": 2,
+   "roadmapStage": "side",
    "name": "On the Spot",
    "description": "Register 10 vehicles to the Scooter Bros app.",
    "grade": "bronze",

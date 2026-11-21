@@ -722,3 +722,159 @@ body.compact-cards .list { gap: 10px; }
   margin-left: 0.15rem;
   vertical-align: 0.1em;
 }
+
+/* Round 5 — dusk theme variant: a warm dark look for late-night
+   hunting, switched by adding .theme-dusk to the body. Only the
+   surfaces change; the layout and the trophy colours stay put. */
+body.theme-dusk {
+  background: #171310;
+  color: #f2e8dc;
+}
+body.theme-dusk .stage { background: #221b16; border-color: #3d2f24; }
+body.theme-dusk .card { background: #2a211a; border-color: #4a382a; }
+body.theme-dusk .tab { color: #d8c9b8; }
+body.theme-dusk .tab[aria-selected="true"] { background: #3a2c20; color: #ffd9a0; }
+
+/* Round 5 — high-contrast mode for tired eyes: stronger text, a
+   heavier border on every interactive element, no faint grey left. */
+body.hc-mode { color: #000; background: #fff; }
+body.hc-mode .card, body.hc-mode .stage { border: 2px solid #000; }
+body.hc-mode .tab, body.hc-mode button { color: #000; border-color: #000; }
+body.hc-mode .settings-note { color: #222; }
+
+/* Round 5 — timed quiz: the clock, its bar, and the low-time warning.
+   The bar drains as the seconds run out; under 5 seconds it turns red
+   and the number pulses, so the pressure is visible at a glance. */
+.quiz-timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  margin: 8px 0;
+}
+.quiz-timer-low { color: #b3261e; }
+.quiz-timed-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: #e5e0d8;
+  overflow: hidden;
+}
+.quiz-timed-fill { height: 100%; background: #2e7d32; border-radius: 4px; }
+.quiz-timer-low .quiz-timed-fill { background: #b3261e; }
+.quiz-hint-card {
+  border: 1px dashed #8a7a5f;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+  background: #fdf8ef;
+}
+
+/* Round 5 — journal statistics strip and streak calendar: the numbers
+   row above the notes, then a Monday-first month grid where a shaded
+   day is a day the player wrote something. */
+.journal-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+}
+.journal-stat {
+  border: 1px solid #d8d0c4;
+  border-radius: 8px;
+  padding: 8px 12px;
+  min-width: 110px;
+}
+.journal-stat-num { font-size: 20px; font-weight: 800; display: block; }
+.journal-stat-label { font-size: 12px; color: var(--ink-faint); }
+.journal-streak-cal {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin: 10px 0;
+  max-width: 340px;
+}
+.journal-cal-day {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  font-size: 12px;
+  background: #f0ece5;
+}
+.journal-cal-day.has-note { background: #c8e6c9; font-weight: 700; }
+.journal-cal-day.today { outline: 2px solid #2e7d32; outline-offset: -2px; }
+
+/* Round 5 — session templates, goal bar and reminder banner. */
+.session-templates { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.session-template {
+  border: 1px solid #c9bfa9;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  background: #fffaf0;
+  cursor: pointer;
+}
+.session-goal { margin: 12px 0; }
+.session-goal-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: #e5e0d8;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.session-goal-fill { height: 100%; background: #1a4d8f; }
+.session-reminder {
+  border-left: 4px solid #2e7d32;
+  padding: 8px 12px;
+  background: #eef6ee;
+  border-radius: 0 8px 8px 0;
+  margin: 10px 0;
+}
+.session-reminder.due { border-left-color: #b3261e; background: #fdecea; }
+
+/* Round 5 — difficulty badge shown beside a trophy's grade: five
+   steps from pale (trivial) to deep red (hardest grind). */
+.trophy-difficulty {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 1px 7px;
+  margin-left: 6px;
+  background: #e8e4dc;
+  color: #333;
+}
+.trophy-difficulty.diff-4 { background: #f5c6a5; color: #7a2e0e; }
+.trophy-difficulty.diff-5 { background: #f2b8b5; color: #7a0d0d; }
+
+/* Round 5 — motion: a small pop when a quiz answer lands, and a gentle
+   slide-in for panels that appear after a click. Both respect the
+   reduced-motion setting and never move content the reader is reading. */
+@keyframes quiz-pop {
+  0% { transform: scale(0.96); }
+  60% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+.quiz-pop { animation: quiz-pop 0.25s ease-out; }
+@keyframes fade-slide-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-slide-in { animation: fade-slide-in 0.3s ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .quiz-pop, .fade-slide-in { animation: none; }
+}
+
+/* Round 5 — keyboard focus, visible on every control, and print rules
+   for the new journal and session sections (they print after the
+   checklist, without their buttons). */
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid #1a4d8f;
+  outline-offset: 2px;
+}
+@media print {
+  .journal-stats, .session-templates, .session-goal { break-inside: avoid; }
+  .quiz-timer, .session-template, .journal-cal-day.today { outline: none; }
+}

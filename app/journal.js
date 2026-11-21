@@ -249,3 +249,169 @@ export function renderJournalSection(trophy, trophies, { onChange } = {}) {
 
   return section;
 }
+
+// ---------------------------------------------------------------------------
+// Round 5 — journal extras: a JSON export/import round-trip, notebook
+// statistics, a streak calendar and full-text search. The plain-text
+// export above stays as the human-readable one; the JSON form below is
+// the one that can be imported back without losing edit dates.
+// ---------------------------------------------------------------------------
+
+export const JOURNAL_JSON_VERSION = 1;
+
+// The whole notebook as JSON: version, export time and one entry per
+// note, each under its trophy's official name so the file stays readable.
+export function exportNotesJson(trophies) {
+  const notes = loadNotes();
+  const byId = new Map((trophies ?? []).map((t) => [t.id, t]));
+  const entries = Object.entries(notes)
+    .filter(([, entry]) => entry && entry.text.trim())
+    .map(([id, entry]) => ({
+      trophyId: Number(id),
+      name: byId.get(Number(id))?.name ?? `Trophy ${id}`,
+      text: entry.text,
+      updatedAt: entry.updatedAt,
+    }))
+    .sort((a, b) => a.trophyId - b.trophyId);
+  return JSON.stringify(
+    { version: JOURNAL_JSON_VERSION, exportedAt: new Date().toISOString(), notes: entries },
+    null,
+    2,
+  );
+}
+
+// Read a JSON export back. Returns { notes, imported, skipped } where
+// notes is a notebook object ready for saveNotes, or { error } when the
+// text is not a notebook at all. Unknown trophy ids and over-long or
+// empty texts are skipped, never stored — an import can never corrupt
+// the notebook or invent a note for a trophy that does not exist.
+export function importNotesJson(text, trophies) {
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return { error: "That file is not valid JSON." };
+  }
+  if (!parsed || !Array.isArray(parsed.notes)) {
+    return { error: "That JSON file is not a journal export." };
+  }
+  const known = new Set((trophies ?? []).map((t) => t.id));
+  const notes = {};
+  let imported = 0;
+  let skipped = 0;
+  for (const item of parsed.notes) {
+    const id = Number(item?.trophyId);
+    const body = typeof item?.text === "string" ? item.text.slice(0, MAX_NOTE_LENGTH) : "";
+    if (!Number.isInteger(id) || !known.has(id) || !body.trim()) {
+      skipped += 1;
+      continue;
+    }
+    notes[id] = {
+      text: body,
+      updatedAt: typeof item.updatedAt === "string" ? item.updatedAt : null,
+    };
+    imported += 1;
+  }
+  return { notes, imported, skipped };
+}
+
+// Headline numbers for the notebook: how many notes, how many words,
+// the average note length, the longest note and the most recently
+// edited one. Empty notebook, all zeroes and nulls — never NaN.
+export function journalStats(trophies) {
+  const notes = loadNotes();
+  const byId = new Map((trophies ?? []).map((t) => [t.id, t]));
+  const entries = Object.entries(notes).filter(([, e]) => e && e.text.trim());
+  let totalWords = 0;
+  let longest = null;
+  let mostRecent = null;
+  for (const [id, entry] of entries) {
+    const words = noteWordCount(entry.text);
+    totalWords += words;
+    if (!longest || words > longest.words) {
+      longest = { trophyId: Number(id), name: byId.get(Number(id))?.name ?? "", words };
+    }
+    if (!mostRecent || String(entry.updatedAt ?? "") > String(mostRecent.updatedAt ?? "")) {
+      mostRecent = { trophyId: Number(id), name: byId.get(Number(id))?.name ?? "", updatedAt: entry.updatedAt };
+    }
+  }
+  return {
+    totalNotes: entries.length,
+    totalWords,
+    avgWords: entries.length === 0 ? 0 : Math.round(totalWords / entries.length),
+    longest,
+    mostRecent,
+  };
+}
+
+// Days with at least one edited note, as { "YYYY-MM-DD": count }.
+// The key is the local date of the edit, so the streak counts days the
+// player actually wrote, in their own timezone.
+export function notesByDay() {
+  const notes = loadNotes();
+  const days = {};
+  for (const entry of Object.values(notes)) {
+    if (!entry || !entry.updatedAt) continue;
+    const d = new Date(entry.updatedAt);
+    if (Number.isNaN(d.getTime())) continue;
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+      d.getDate(),
+    ).padStart(2, "0")}`;
+    days[key] = (days[key] ?? 0) + 1;
+  }
+  return days;
+}
+
+// Consecutive days with a note, counting back from today: the writing
+// streak. A gap yesterday breaks it; a note today starts it at 1.
+export function journalStreakDays(now = new Date()) {
+  const days = notesByDay();
+  let streak = 0;
+  const cursor = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  for (;;) {
+    const key = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, "0")}-${String(
+      cursor.getDate(),
+    ).padStart(2, "0")}`;
+    if (!days[key]) break;
+    streak += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
+
+// Full-text search across notes and trophy names: the query matches a
+// note's text or its trophy's official name, case-insensitive. Returns
+// the matching notes newest-edited first, each with its trophy.
+export function searchNotes(trophies, query) {
+  const needle = String(query ?? "").trim().toLowerCase();
+  if (!needle) return [];
+  const notes = loadNotes();
+  const byId = new Map((trophies ?? []).map((t) => [t.id, t]));
+  return Object.entries(notes)
+    .filter(([, entry]) => entry && entry.text.trim())
+    .map(([id, entry]) => ({ trophy: byId.get(Number(id)), entry }))
+    .filter(
+      ({ trophy, entry }) =>
+        entry.text.toLowerCase().includes(needle) ||
+        (trophy?.name ?? "").toLowerCase().includes(needle),
+    )
+    .sort((a, b) => String(b.entry.updatedAt ?? "").localeCompare(String(a.entry.updatedAt ?? "")));
+}
+
+// One month of the streak calendar: every day of the month with its
+// note count (0 when nothing was written), so the calendar can shade
+// active days. Weeks start on Monday; days outside the month are null.
+export function notesCalendarMonth(year, month) {
+  const days = notesByDay();
+  const first = new Date(year, month, 1);
+  const startOffset = (first.getDay() + 6) % 7;
+  const inMonth = new Date(year, month + 1, 0).getDate();
+  const cells = [];
+  for (let i = 0; i < startOffset; i += 1) cells.push(null);
+  for (let day = 1; day <= inMonth; day += 1) {
+    const key = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    cells.push({ date: key, day, count: days[key] ?? 0 });
+  }
+  while (cells.length % 7 !== 0) cells.push(null);
+  return cells;
+}

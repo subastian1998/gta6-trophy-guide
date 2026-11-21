@@ -241,3 +241,146 @@ export function renderQuiz(root, { trophies, onOpenGuide }) {
   render();
   return { render };
 }
+
+// ---------------------------------------------------------------------------
+// Round 5 — extra quiz modes. The two original modes stay untouched;
+// these three play on top of the same deck and the same scoring helpers:
+//
+//   "timed": a desc-to-name question with a 20-second clock. Answering
+//     after the clock runs out counts as wrong even when the pick was
+//     right, so the mode trains recall under pressure, not guessing.
+//   "name-from-hint": only the grade, the kind and the first letter of
+//     the name are shown, so the player must know the list cold.
+//   "difficulty": the prompt is a trophy name and the four choices are
+//     difficulty ratings — it teaches the hunt profile (the difficulty
+//     field each trophy carries in trophies.json), not the descriptions.
+// ---------------------------------------------------------------------------
+
+export const QUIZ_TIMED_SECONDS = 20;
+export const QUIZ_EXTRA_MODES = ["timed", "name-from-hint", "difficulty"];
+export const QUIZ_EXTRA_MODE_LABELS = {
+  timed: "Timed challenge (20s)",
+  "name-from-hint": "Guess the name from a hint",
+  difficulty: "Guess the difficulty",
+};
+
+// Plain words for a 1-5 difficulty, shared by the difficulty mode and
+// any panel that shows a trophy's rating.
+export function difficultyLabel(n) {
+  if (n <= 1) return "1 — Trivial";
+  if (n === 2) return "2 — Easy";
+  if (n === 3) return "3 — Moderate";
+  if (n === 4) return "4 — Hard";
+  return "5 — Hardest grind";
+}
+
+// A timed question is a desc-to-name question plus its clock: the
+// moment the question was shown (ms since epoch) and how many seconds
+// the player gets. The clock is data, not a timer — the caller ticks it.
+export function buildTimedQuestion(trophies, answer) {
+  const base = buildQuestion(trophies, "desc-to-name", answer);
+  return { ...base, mode: "timed", seconds: QUIZ_TIMED_SECONDS, askedAt: Date.now() };
+}
+
+// Seconds left on a timed question at `nowMs` (defaults to now), never
+// below zero. A question with no clock is treated as already expired.
+export function timedSecondsLeft(question, nowMs = Date.now()) {
+  if (!question || typeof question.askedAt !== "number") return 0;
+  const used = (nowMs - question.askedAt) / 1000;
+  return Math.max(0, question.seconds - used);
+}
+
+// A whole timed round: a shuffled deck of questions, the running score
+// (the same shape createQuizScore returns) and the index of the current
+// question. Built once, then advanced by timedQuizAnswer.
+export function createTimedQuiz(trophies, questionCount = 10) {
+  const deck = shuffleArray(trophies).slice(0, Math.max(1, questionCount));
+  return {
+    questions: deck.map((t) => buildTimedQuestion(trophies, t)),
+    index: 0,
+    score: createQuizScore(),
+    finished: deck.length === 0,
+  };
+}
+
+// Answer the current timed question. Returns { correct, timedOut } and
+// moves the round on; the last answer marks the round finished. A pick
+// after the clock hits zero is wrong even when it names the right trophy.
+export function timedQuizAnswer(state, choiceId, nowMs = Date.now()) {
+  const question = state.questions[state.index];
+  if (!question) return { correct: false, timedOut: false };
+  const timedOut = timedSecondsLeft(question, nowMs) <= 0;
+  const correct = !timedOut && choiceId === question.answerId;
+  recordQuizAnswer(state.score, correct);
+  state.index += 1;
+  if (state.index >= state.questions.length) state.finished = true;
+  return { correct, timedOut };
+}
+
+// Hint question: the prompt is grade + kind + first letter + name
+// length, the choices are four real trophy names. Hidden trophies are
+// fair game here — the mode is a study tool, like the original modes.
+export function buildNameHintQuestion(trophies, answer) {
+  const chosen = answer ?? shuffleArray(trophies)[0];
+  const distractors = pickDistractors(trophies, chosen);
+  const all = shuffleArray([chosen, ...distractors]);
+  const initial = chosen.name.trim().charAt(0).toUpperCase();
+  return {
+    mode: "name-from-hint",
+    prompt:
+      `${chosen.grade} · ${chosen.kind} · starts with “${initial}” · ` +
+      `${chosen.name.trim().length} characters`,
+    promptLabel: "Which trophy fits this hint?",
+    choices: all.map((t) => ({ id: t.id, text: t.name })),
+    answerId: chosen.id,
+    answerText: chosen.name,
+    answerTrophy: chosen,
+  };
+}
+
+// Difficulty question: the prompt is a trophy name, the choices are
+// the five difficulty labels minus one (four choices, as elsewhere).
+// A trophy with no difficulty in the data counts as 3 — moderate.
+export function buildDifficultyQuestion(trophies, answer) {
+  const chosen = answer ?? shuffleArray(trophies)[0];
+  const rating = Number.isInteger(chosen.difficulty) ? chosen.difficulty : 3;
+  const others = shuffleArray([1, 2, 3, 4, 5].filter((n) => n !== rating)).slice(0, 3);
+  const levels = shuffleArray([rating, ...others]);
+  return {
+    mode: "difficulty",
+    prompt: chosen.name,
+    promptLabel: "How hard is this trophy, on this guide's 1–5 scale?",
+    choices: levels.map((n) => ({ id: n, text: difficultyLabel(n) })),
+    answerId: rating,
+    answerText: difficultyLabel(rating),
+    answerTrophy: chosen,
+  };
+}
+
+// One mixed round across any of the five modes: `modes` names the modes
+// to draw from, `count` caps the questions. Each entry is a question
+// object from the matching builder, so the renderer needs no new shape.
+export function buildMixedQuizRound(trophies, modes, count = 10) {
+  const usable = (modes ?? []).filter((m) =>
+    ["desc-to-name", "name-to-desc", "timed", "name-from-hint", "difficulty"].includes(m),
+  );
+  const picked = usable.length > 0 ? usable : ["desc-to-name"];
+  const deck = shuffleArray(trophies).slice(0, Math.max(1, count));
+  return deck.map((t, i) => {
+    const mode = picked[i % picked.length];
+    if (mode === "name-to-desc") return buildQuestion(trophies, mode, t);
+    if (mode === "timed") return buildTimedQuestion(trophies, t);
+    if (mode === "name-from-hint") return buildNameHintQuestion(trophies, t);
+    if (mode === "difficulty") return buildDifficultyQuestion(trophies, t);
+    return buildQuestion(trophies, "desc-to-name", t);
+  });
+}
+
+// One-line verdict for a finished round, for the score line under the
+// quiz: "7/10 correct · 70% · best streak 4".
+export function quizRoundSummary(score) {
+  return (
+    `${score.correct}/${score.asked} correct · ${quizAccuracy(score)}% · ` +
+    `best streak ${score.bestStreak}`
+  );
+}

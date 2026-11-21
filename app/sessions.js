@@ -230,3 +230,170 @@ export function initSessions({ root, getEarned, onChange }) {
   render();
   return { render };
 }
+
+// ---------------------------------------------------------------------------
+// Round 5 — session extras: ready-made session templates, a platinum
+// goal with a deadline, a "time to play again" reminder, and streak
+// numbers. Templates only pre-fill a session's note and planned length;
+// the earned set is still captured from the checklist, as before.
+// ---------------------------------------------------------------------------
+
+// Three starting points for a play session: a short story push, a
+// focused collectible sweep and a long grind block. `minutes` is the
+// plan, not a timer — the session ends when the player ends it.
+export const SESSION_TEMPLATES = [
+  { id: "story-push", label: "Story push", minutes: 60, focus: "story", note: "Story missions" },
+  { id: "collectible-sweep", label: "Collectible sweep", minutes: 45, focus: "collectibles", note: "Collectibles" },
+  { id: "grind-block", label: "Grind block", minutes: 120, focus: "grind", note: "Grind trophies" },
+];
+
+// A new open session from a template: same shape initSessions reads
+// (id, startedAt, endedAt, startEarned, endEarned, note, done), with
+// the template's note and planned length attached for the reminder.
+export function sessionFromTemplate(template, earnedNow) {
+  return {
+    id: `s-${Date.now().toString(36)}-${Math.floor(Math.random() * 1e6).toString(36)}`,
+    startedAt: new Date().toISOString(),
+    endedAt: null,
+    startEarned: [...(earnedNow ?? [])],
+    endEarned: null,
+    note: template?.note ?? "",
+    done: false,
+    templateId: template?.id ?? null,
+    plannedMinutes: template?.minutes ?? null,
+  };
+}
+
+const SESSION_GOAL_KEY = "gta6-trophy-guide-session-goal-v1";
+
+// The platinum goal: how many trophies to have earned, and by when.
+// One goal at a time, stored beside the sessions. Null when no goal
+// was ever set; a corrupt value is treated as no goal.
+export function loadSessionGoal() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(SESSION_GOAL_KEY) ?? "null");
+    if (!raw || !Number.isInteger(raw.targetEarned) || typeof raw.deadline !== "string") return null;
+    return raw;
+  } catch {
+    return null;
+  }
+}
+
+export function saveSessionGoal(goal) {
+  try {
+    if (!goal) localStorage.removeItem(SESSION_GOAL_KEY);
+    else localStorage.setItem(SESSION_GOAL_KEY, JSON.stringify(goal));
+  } catch {
+    // Storage unavailable: the goal simply does not persist.
+  }
+}
+
+// Whole days from now until the goal's deadline, negative when the
+// deadline has passed. A goal with no usable deadline has no countdown.
+export function daysUntilDeadline(goal, now = new Date()) {
+  if (!goal || !goal.deadline) return null;
+  const end = new Date(goal.deadline);
+  if (Number.isNaN(end.getTime())) return null;
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const last = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+  return Math.round((last - today) / 86400000);
+}
+
+// Progress against the goal: trophies earned, the target, the percent,
+// days left and trophies still needed per remaining day. The pace is
+// what the player must average from today — 0 when the goal is met.
+export function goalProgress(goal, earnedCount, now = new Date()) {
+  if (!goal) return null;
+  const earned = Math.max(0, earnedCount ?? 0);
+  const target = Math.max(1, goal.targetEarned);
+  const daysLeft = daysUntilDeadline(goal, now);
+  const remaining = Math.max(0, target - earned);
+  return {
+    earned,
+    target,
+    percent: Math.min(100, Math.round((earned / target) * 100)),
+    daysLeft,
+    remaining,
+    perDay: daysLeft === null || daysLeft <= 0 ? remaining : Math.ceil(remaining / Math.max(1, daysLeft)),
+    met: earned >= target,
+  };
+}
+
+// The "time to play again" reminder: days since the last finished
+// session, and whether the player is due. No finished session yet
+// means the hunt has not started — the reminder says so, gently.
+export function nextSessionReminder(sessions, now = new Date()) {
+  const done = (sessions ?? []).filter((s) => s && s.done && s.endedAt);
+  if (done.length === 0) {
+    return { daysSinceLast: null, due: true, message: "No finished session yet — start your first one before you play." };
+  }
+  const last = done
+    .map((s) => new Date(s.endedAt).getTime())
+    .filter((t) => Number.isFinite(t))
+    .sort((a, b) => b - a)[0];
+  const days = Math.floor((now.getTime() - last) / 86400000);
+  return {
+    daysSinceLast: days,
+    due: days >= 3,
+    message:
+      days === 0
+        ? "You played today — the hunt is warm."
+        : days === 1
+          ? "Last session was yesterday."
+          : `Last session was ${days} days ago${days >= 3 ? " — time for another push." : "."}`,
+  };
+}
+
+// Consecutive days with at least one finished session, counting back
+// from today — the play streak. A day with no finished session breaks
+// it; an open session does not count, it has not ended yet.
+export function sessionStreakDays(sessions, now = new Date()) {
+  const days = new Set();
+  for (const s of sessions ?? []) {
+    if (!s || !s.done || !s.endedAt) continue;
+    const d = new Date(s.endedAt);
+    if (Number.isNaN(d.getTime())) continue;
+    days.add(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
+  }
+  let streak = 0;
+  const cursor = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  for (;;) {
+    const key = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, "0")}-${String(cursor.getDate()).padStart(2, "0")}`;
+    if (!days.has(key)) break;
+    streak += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
+
+// Longest finished session in minutes, 0 when nothing finished yet.
+export function longestSessionMinutes(sessions) {
+  let best = 0;
+  for (const s of sessions ?? []) {
+    if (!s || !s.done || !s.startedAt || !s.endedAt) continue;
+    best = Math.max(best, minutesBetween(s.startedAt, s.endedAt));
+  }
+  return best;
+}
+
+// Finished sessions in the last 7 days, for the weekly rhythm line.
+export function sessionsThisWeek(sessions, now = new Date()) {
+  const weekAgo = now.getTime() - 7 * 86400000;
+  return (sessions ?? []).filter((s) => {
+    if (!s || !s.done || !s.endedAt) return false;
+    const t = new Date(s.endedAt).getTime();
+    return Number.isFinite(t) && t >= weekAgo;
+  }).length;
+}
+
+// Distinct trophy names earned across all finished sessions — the
+// hunt's yield, as the log itself proves it, without re-reading the
+// checklist.
+export function trophiesEarnedInSessions(sessions) {
+  const names = new Set();
+  for (const s of sessions ?? []) {
+    if (!s || !s.done || !Array.isArray(s.endEarned)) continue;
+    for (const name of earnedDuring(s, [])) names.add(name);
+  }
+  return [...names];
+}
